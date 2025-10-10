@@ -1,33 +1,118 @@
-HELP.md
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+
+# Package files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven build folder
 target/
-.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# Gradle build folder
 build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+.gradle/
 
-### VS Code ###
-.vscode/
+# Maven Wrapper files
+.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/
+mvnw
+mvnw.cmd
+
+# Spring Boot specific
+application.properties
+application.yml
+.env
+
+# JetBrains IDEs (IntelliJ IDEA, GoLand, PyCharm, Android Studio, etc.)
+
+# User-specific files to ignore
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# AWS User-specific
+.idea/**/aws.xml
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or high-churn files
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# Uncomment if using Gradle or Maven with auto-import to avoid churn
+# .idea/artifacts
+# .idea/compiler.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .idea/*.iml
+# .idea/modules
+# *.iml
+# *.ipr
+
+# Plugin-specific IDE files
+.idea/**/mongoSettings.xml
+.idea/sonarlint/
+.idea/sonarlint.xml
+.idea/replstate.xml
+
+# Crashlytics plugin files
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Editor HTTP client cache
+.idea/httpRequests
+http-client.private.env.json
+
+# Android Studio cache file
+.idea/caches/build_file_checksums.ser
+
+# Apifox Helper cache
+.idea/.cache/.Apifox_Helper
+.idea/ApifoxUploaderProjectSetting.xml
+
+# IntelliJ output folder
+out/
+
+# Other JetBrains plugins and files
+.idea_modules/
+atlassian-ide-plugin.xml
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# OS junk files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
