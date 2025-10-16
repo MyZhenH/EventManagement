@@ -1,13 +1,19 @@
 package com.example.EventManagement.controller;
 
-import com.example.EventManagement.dto.EventBasicDTO;
-import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.payload.EventRequestDto;
+import com.example.EventManagement.payload.EventResponseDto;
 import com.example.EventManagement.service.EventService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.EventManagement.dto.EventBasicDTO;
+import com.example.EventManagement.dto.EventDetailedDTO;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -21,6 +27,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
+ 
     /**
      * Retrieve a list of basic event information.
      * This method returns a list of events with basic details such as title, location, and event date.
@@ -58,6 +65,11 @@ public class EventController {
         }else{
             return ResponseEntity.notFound().build();
         }
+    }
+  
+   @PostMapping
+    public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto eventRequestDto) {
+        return ResponseEntity.ok(eventService.createEvent(eventRequestDto));
     }
 
 }

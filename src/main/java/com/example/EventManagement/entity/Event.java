@@ -1,6 +1,8 @@
 package com.example.EventManagement.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -13,50 +15,58 @@ public class Event {
     @Column(name = "event_id")
     private Long eventId;
 
+    @NotBlank
     @Column(nullable = false)
     private String title;
 
+    @NotBlank
     @Column(nullable = false)
     private String description;
 
+    @NotNull
     @Column(name = "event_date")
     private LocalDateTime eventDate;
 
+    @NotBlank
     @Column(nullable = false)
     private String location;
 
+    @NotNull
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @NotNull
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    private User user;
+    @JoinColumn(name = "created_by", nullable = false)
+    private User createdBy;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_status_id")
+    @JoinColumn(name = "event_status_id", nullable = false)
     private EventStatus eventStatus;
 
-    public Event() {
-    }
+    public Event() {}
 
-    public Event(Long eventId, String title, String description,
-                 LocalDateTime eventDate, String location, LocalDateTime createdAt,
-                 LocalDateTime updatedAt, User user, Category category, EventStatus eventStatus) {
-        this.eventId = eventId;
+    public Event(String title, String description, LocalDateTime eventDate,
+                 String location, LocalDateTime createdAt, LocalDateTime updatedAt,
+                 User createdBy, Category category, EventStatus eventStatus) {
+
         this.title = title;
         this.description = description;
         this.eventDate = eventDate;
         this.location = location;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.user = user;
+        this.createdBy = createdBy;
         this.category = category;
         this.eventStatus = eventStatus;
     }
@@ -117,12 +127,12 @@ public class Event {
         this.updatedAt = updatedAt;
     }
 
-    public User getUser() {
-        return user;
+    public User getCreatedBy() {
+        return createdBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Category getCategory() {
