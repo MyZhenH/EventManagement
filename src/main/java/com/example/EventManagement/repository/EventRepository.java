@@ -7,11 +7,15 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EventRepository extends JpaRepository<Event, Long> {
+public interface EventRepository extends JpaRepository <Event, Long> {
+   List<Event> findByTitleContainingIgnoreCase(String title);
+   List<Event> findByLocationContainingIgnoreCase(String location);
+   List<Event> findByCategory_CategoryNameContainingIgnoreCase(String categoryName);
+   List<Event> findByCategory_CategoryId(Long categoryId);
+   List<Event> findByEventStatus_EventStatusId(Long eventStatusId);
 
-    List<Event> findByTitleContainingIgnoreCase(String title);
-    List<Event> findByLocationContainingIgnoreCase(String location);
-    List<Event> findByCategory_CategoryName(String categoryName);
-    List<Event> findByCategory_CategoryId(Long categoryId);
-    List<Event> findByEventStatus_EventStatusId(Long eventStatusId);
+
+
+
+
 }
