@@ -1,26 +1,26 @@
 package com.example.EventManagement.service;
 
-import com.example.EventManagement.dto.EventBasicDTO;
+import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.entity.Category;
 import com.example.EventManagement.entity.Event;
+import com.example.EventManagement.entity.EventStatus;
+import com.example.EventManagement.entity.User;
+import com.example.EventManagement.payload.request.EventCreateRequest;
+import com.example.EventManagement.payload.response.EventResponseDto;
+import com.example.EventManagement.payload.request.EventUpdateRequest;
+import com.example.EventManagement.repository.CategoryRepository;
 import com.example.EventManagement.repository.EventRepository;
+import com.example.EventManagement.repository.EventStatusRepository;
+import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.utils.DateUtils;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import com.example.EventManagement.entity.Category;
-import com.example.EventManagement.entity.EventStatus;
-import com.example.EventManagement.entity.User;
-import com.example.EventManagement.payload.EventRequestDto;
-import com.example.EventManagement.payload.EventResponseDto;
-import com.example.EventManagement.repository.CategoryRepository;
-import com.example.EventManagement.repository.EventStatusRepository;
-import com.example.EventManagement.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
-
-import java.time.LocalDateTime;
 
 @Service
 public class EventService {
@@ -41,26 +41,25 @@ public class EventService {
         this.eventStatusRepository = eventStatusRepository;
     }
 
-
-
     /**
      * Retrieves a list of all events with basic information (title, location, and event date).
      * <p>
-     * This method fetches all events from the repository and converts them into {@link EventBasicDTO} objects.
+     * This method fetches all events from the repository and converts them into {@link EventBasicDto} objects.
      * The resulting list includes only the title, location, and event date of each event.
      * If the location or event date is not available, the method will default to "Not Determined" for location.
      * </p>
      *
-     * @return A list of {@link EventBasicDTO} objects representing basic information about each event.
+     * @return A list of {@link EventBasicDto} objects representing basic information about each event.
      * If there are no events in the repository, an empty list will be returned.
      */
-    public List<EventBasicDTO> getAllEvents() {
+    public List<EventBasicDto> getAllEvents() {
         return eventRepository.findAll()
                 .stream()
-                .map(event -> new EventBasicDTO(
+                .map(event -> new EventBasicDto(
+                        event.getEventId(),
                         event.getTitle(),
                         event.getLocation() != null ? event.getLocation() : "Not Determined",
-                        event.getEventDate()
+                        DateUtils.formatEventDate(event.getEventDate())
                 ))
                 .collect(Collectors.toList());
     }
@@ -91,10 +90,58 @@ public class EventService {
         }
     }
   
-  public EventResponseDto createEvent(EventRequestDto eventRequestDto) {
+    public EventResponseDto createEvent(EventCreateRequest eventCreateRequest) {
         User user = userRepository.findById(1L).orElse(null);
-        Event savedEvent = eventRepository.save(toEventEntity(eventRequestDto, user));
+        Event savedEvent = eventRepository.save(toEventEntity(eventCreateRequest, user));
         return toEventResponseDto(savedEvent);
+    }
+
+    public EventResponseDto updateEvent(Long eventId, EventUpdateRequest eventUpdateRequest) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found"));
+
+        if (eventUpdateRequest.title() != null) {
+            event.setTitle(eventUpdateRequest.title());
+        }
+
+        if (eventUpdateRequest.description() != null) {
+            event.setDescription(eventUpdateRequest.description());
+        }
+
+        if (eventUpdateRequest.eventDate() != null) {
+            event.setEventDate(eventUpdateRequest.eventDate());
+        }
+
+        if (eventUpdateRequest.location() != null) {
+            event.setLocation(eventUpdateRequest.location());
+        }
+
+        if (eventUpdateRequest.categoryId() != null) {
+            Category category = categoryRepository.findById(eventUpdateRequest.categoryId())
+                    .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+            event.setCategory(category);
+        }
+
+        if (eventUpdateRequest.eventStatusId() != null) {
+            EventStatus eventStatus = eventStatusRepository.findById(eventUpdateRequest.eventStatusId())
+                    .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
+            event.setEventStatus(eventStatus);
+        }
+
+        // 1L is a placeholder during dev
+        User user = userRepository.findById(1L)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        Event savedEvent = eventRepository.save(event);
+        return toEventResponseDto(savedEvent);
+    }
+
+    public void deleteEvent(Long id) {
+        if (!eventRepository.existsById(id)) {
+            throw new EntityNotFoundException("Event not found");
+        }
+
+        eventRepository.deleteById(id);
     }
 
     private EventResponseDto toEventResponseDto(Event event) {
@@ -107,42 +154,39 @@ public class EventService {
                 event.getCreatedAt(),
                 event.getUpdatedAt(),
                 event.getCreatedBy().getUserId(),
+                event.getUpdatedBy().getUserId(),
                 event.getCategory().getCategoryId(),
                 event.getEventStatus().getEventStatusId()
         );
     }
 
-    private Event toEventEntity(EventRequestDto eventRequestDto, User createdBy) {
+    private Event toEventEntity(EventCreateRequest dto, User user) {
+        Category category = getCategory(dto.categoryId());
+        EventStatus status = getEventStatus(dto.eventStatusId());
+
         Event event = new Event();
 
-        event.setTitle(eventRequestDto.title());
-        event.setDescription(eventRequestDto.description());
-        event.setEventDate(eventRequestDto.eventDate());
-        event.setLocation(eventRequestDto.location());
+        event.setTitle(dto.title());
+        event.setDescription(dto.description());
+        event.setEventDate(dto.eventDate());
+        event.setLocation(dto.location());
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
         // This will be changed later to admin functionality
-        event.setCreatedBy(createdBy);
-
-        Category category = categoryRepository.findById(eventRequestDto.categoryId())
-                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
-        event.setCategory(category);
-
-        EventStatus eventStatus = eventStatusRepository.findById(eventRequestDto.eventStatusId())
-                .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
-        event.setEventStatus(eventStatus);
+        event.setCreatedBy(user);
+        event.setUpdatedBy(user);
 
         return event;
     }
 
+    private Category getCategory(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Category not found"));
+    }
 
+    private EventStatus getEventStatus(Long id) {
+        return eventStatusRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
+    }
 }
-
-
-
-
-
-
-
-

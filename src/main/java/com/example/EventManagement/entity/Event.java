@@ -46,6 +46,11 @@ public class Event {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "updated_by", nullable = false)
+    private User updatedBy;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -58,7 +63,8 @@ public class Event {
 
     public Event(String title, String description, LocalDateTime eventDate,
                  String location, LocalDateTime createdAt, LocalDateTime updatedAt,
-                 User createdBy, Category category, EventStatus eventStatus) {
+                 User createdBy, User updatedBy, Category category,
+                 EventStatus eventStatus) {
 
         this.title = title;
         this.description = description;
@@ -67,6 +73,7 @@ public class Event {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.createdBy = createdBy;
+        this.updatedBy = updatedBy;
         this.category = category;
         this.eventStatus = eventStatus;
     }
@@ -133,6 +140,14 @@ public class Event {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public User getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(User updatedBy) {
+        this.updatedBy = updatedBy;
     }
 
     public Category getCategory() {

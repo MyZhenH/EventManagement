@@ -22,6 +22,7 @@ public class DateUtils {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM, yyyy, HH:mm");
             return eventDate.format(formatter);
         }
+
         return "Not Determined";
     }
 }
