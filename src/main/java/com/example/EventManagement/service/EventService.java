@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class EventService {
     private final EventRepository eventRepository;
 
-    @Autowired
+
     public EventService(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
