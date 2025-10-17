@@ -15,7 +15,7 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Routes>
-            {/* Publika routes - Alla kan se */}
+            {/* Public routes - All can see */}
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
 
@@ -23,7 +23,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Skyddade routes - Kräver inloggning */}
+            {/* Guarded routes - Required login */}
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
         </div>

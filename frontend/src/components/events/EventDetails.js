@@ -1,4 +1,3 @@
-// src/components/events/EventDetails.js
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
