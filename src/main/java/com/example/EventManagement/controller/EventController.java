@@ -1,19 +1,14 @@
 package com.example.EventManagement.controller;
 
-import com.example.EventManagement.payload.EventRequestDto;
-import com.example.EventManagement.payload.EventResponseDto;
+import com.example.EventManagement.dto.EventBasicDto;
+import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.payload.request.EventCreateRequest;
+import com.example.EventManagement.payload.response.EventResponseDto;
+import com.example.EventManagement.payload.request.EventUpdateRequest;
 import com.example.EventManagement.service.EventService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.example.EventManagement.dto.EventBasicDTO;
-import com.example.EventManagement.dto.EventDetailedDTO;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,12 +32,13 @@ public class EventController {
      * or HTTP status 204 (No Content) if no events are found.
      */
     @GetMapping
-    public ResponseEntity<List<EventBasicDTO>> getAllEvents(){
-        List<EventBasicDTO> events = eventService.getAllEvents();
+    public ResponseEntity<List<EventBasicDto>> getAllEvents(){
+        List<EventBasicDto> events = eventService.getAllEvents();
 
-        if(events.isEmpty()){
+        if (events.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
+
         return ResponseEntity.ok(events);
     }
 
@@ -62,14 +58,27 @@ public class EventController {
 
         if (eventDTO != null){
             return ResponseEntity.ok(eventDTO);
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
   
-   @PostMapping
-    public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventRequestDto eventRequestDto) {
-        return ResponseEntity.ok(eventService.createEvent(eventRequestDto));
+    @PostMapping
+    public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventCreateRequest eventCreateRequest) {
+        return ResponseEntity.ok(eventService.createEvent(eventCreateRequest));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<EventResponseDto> updateEvent(@PathVariable Long id,
+                                                        @Valid @RequestBody EventUpdateRequest eventUpdateRequest) {
+
+        EventResponseDto eventResponseDto = eventService.updateEvent(id, eventUpdateRequest);
+        return ResponseEntity.ok(eventResponseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteEvent(@PathVariable Long id){
+        eventService.deleteEvent(id);
+        return ResponseEntity.noContent().build();
+    }
 }
