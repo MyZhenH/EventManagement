@@ -2,6 +2,7 @@ package com.example.EventManagement.service;
 
 import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.dto.UserUpcomingEventDto;
 import com.example.EventManagement.entity.Category;
 import com.example.EventManagement.entity.Event;
 import com.example.EventManagement.entity.EventStatus;
@@ -9,10 +10,7 @@ import com.example.EventManagement.entity.User;
 import com.example.EventManagement.payload.request.EventCreateRequest;
 import com.example.EventManagement.payload.response.EventResponseDto;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
-import com.example.EventManagement.repository.CategoryRepository;
-import com.example.EventManagement.repository.EventRepository;
-import com.example.EventManagement.repository.EventStatusRepository;
-import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.repository.*;
 import com.example.EventManagement.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -29,16 +27,20 @@ public class EventService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final EventStatusRepository eventStatusRepository;
+    private final EventParticipantRepository eventParticipantRepository;
 
     public EventService(EventRepository eventRepository,
                         UserRepository userRepository,
                         CategoryRepository categoryRepository,
-                        EventStatusRepository eventStatusRepository) {
+                        EventStatusRepository eventStatusRepository,
+                        EventParticipantRepository eventParticipantRepository
+                        ) {
 
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.eventStatusRepository = eventStatusRepository;
+        this.eventParticipantRepository = eventParticipantRepository;
     }
 
     /**
@@ -188,5 +190,12 @@ public class EventService {
     private EventStatus getEventStatus(Long id) {
         return eventStatusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
+    }
+    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+        long registeredStatusId = 1L;
+        List<Event> events = eventParticipantRepository.findUpcomingEventsByUserAndStatus(userId,registeredStatusId);
+        return events.stream()
+                .map(UserUpcomingEventDto::new)
+                .collect(Collectors.toList());
     }
 }
