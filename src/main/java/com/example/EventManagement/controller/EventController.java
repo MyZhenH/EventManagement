@@ -81,4 +81,13 @@ public class EventController {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{eventId}/status")
+    public ResponseEntity<EventStatusDto> updateEventStatus(
+            @PathVariable Long eventId,
+            @RequestBody UpdateEventStatusRequest request
+    ) {
+        EventStatusDto dto = eventService.newEventStatusAndMap(eventId, request.getEventStatusId());
+        return ResponseEntity.ok(dto);
+    }
+
 }
