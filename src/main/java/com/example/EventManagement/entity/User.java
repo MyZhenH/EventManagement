@@ -34,7 +34,7 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    private boolean enabled;
+    private boolean enabled = true;
 
     public User() {
     }
