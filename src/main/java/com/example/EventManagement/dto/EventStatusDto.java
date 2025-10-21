@@ -15,7 +15,7 @@ public class EventStatusDto {
     private String statusName;
 
 
-    public EventStatusDto() {} // This constructor Required for serialization
+    public EventStatusDto() {} //  for serialization
 
 
     public EventStatusDto(Event event) {
@@ -30,7 +30,7 @@ public class EventStatusDto {
     }
 
 
-    // all gitters and sitters
+
     public Long getEventId() { return eventId; }
     public void setEventId(Long eventId) { this.eventId = eventId; }
 
