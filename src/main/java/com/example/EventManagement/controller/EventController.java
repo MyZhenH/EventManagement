@@ -2,7 +2,9 @@ package com.example.EventManagement.controller;
 
 import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.dto.EventStatusDto;
 import com.example.EventManagement.payload.request.EventCreateRequest;
+import com.example.EventManagement.payload.request.UpdateEventStatusRequest;
 import com.example.EventManagement.payload.response.EventResponseDto;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
 import com.example.EventManagement.service.EventService;
@@ -81,4 +83,13 @@ public class EventController {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
+    @PutMapping("/{eventId}/status")
+    public ResponseEntity<EventStatusDto> updateEventStatus(
+            @PathVariable Long eventId,
+            @RequestBody UpdateEventStatusRequest request
+    ) {
+        EventStatusDto dto = eventService.newEventStatusAndMap(eventId, request.getEventStatusId());
+        return ResponseEntity.ok(dto);
+    }
+
 }
