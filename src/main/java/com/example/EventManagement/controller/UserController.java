@@ -29,12 +29,12 @@ public class UserController {
 
         if (events.isEmpty()) {
             return ResponseEntity.ok(
-                    new UserUpcomingEventsResponse("Inga kommande evenemang.", Collections.emptyList())
+                    new UserUpcomingEventsResponse("No upcoming events.", Collections.emptyList())
             );
         }
 
         return ResponseEntity.ok(
-                new UserUpcomingEventsResponse("Kommande evenemang hämtade.", events)
+                new UserUpcomingEventsResponse("Upcoming events.", events)
         );
     }
 
