@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import api from "../../services/api.js";
 
 const categories = ["Conference", "Workshop", "Meetup", "Webinar"];
 const statuses = ["Scheduled", "Cancelled", "Completed"];
@@ -13,7 +14,6 @@ export default function EventForm() {
     const [eventStatus, setEventStatus] = useState("");
     const [errors, setErrors] = useState({});
 
-
     function validate() {
         const newErrors = {};
 
@@ -27,17 +27,29 @@ export default function EventForm() {
         return Object.keys(newErrors).length === 0;
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         if (!validate()) return;
 
         const eventData = {
-            title, description, eventDate,
-            location: isOnline ? "Online" : location, category, eventStatus
-        }
+            title,
+            description,
+            eventDate,
+            location: isOnline ? "Online" : location,
+            category,
+            eventStatus,
+        };
 
-        console.log("Event saved:", eventData);
-        alert("Event saved successfully!");
+        try {
+            await api.post("/api/events", eventData);
+            console.log("Event saved:", eventData);
+        } catch (error) {
+            if (error.response) {
+                console.log(`Error: ${error.response.data.message || error.message}`);
+            } else {
+                console.log(`Error: ${error.message}`);
+            }
+        }
     }
 
     return (
