@@ -4,10 +4,7 @@ import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDTO;
 import com.example.EventManagement.dto.UserUpcomingEventDto;
 import com.example.EventManagement.dto.EventStatusDto;
-import com.example.EventManagement.entity.Category;
-import com.example.EventManagement.entity.Event;
-import com.example.EventManagement.entity.EventStatus;
-import com.example.EventManagement.entity.User;
+import com.example.EventManagement.entity.*;
 import com.example.EventManagement.payload.request.EventCreateRequest;
 import com.example.EventManagement.payload.response.EventResponseDto;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
@@ -219,11 +216,20 @@ public class EventService {
 
     }
 
-    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-        long registeredStatusId = 1L;
-        List<Event> events = eventParticipantRepository.findUpcomingEventsByUserAndStatus(userId,registeredStatusId);
-        return events.stream()
-                .map(UserUpcomingEventDto::new)
-                .collect(Collectors.toList());
-    }
+//    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+//        long registeredStatusId = 1L;
+//        List<Event> events = eventParticipantRepository.findUpcomingEventsByUserAndStatus(userId,registeredStatusId);
+//        return events.stream()
+//                .map(UserUpcomingEventDto::new)
+//                .collect(Collectors.toList());
+//    }
+public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+    long registeredStatusId = 1L;
+    List<EventParticipant> participants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+
+    return participants.stream()
+            .map(ep -> new UserUpcomingEventDto(ep.getEvent(), ep.getParticipantStatus().getStatusName()))
+            .collect(Collectors.toList());
+}
+
 }
