@@ -98,12 +98,6 @@ const Login = () => {
             </Link>
           </div>
         </form>
-
-        <div className="test-users">
-          <p className="test-users-title">Testanvändare:</p>
-          <p>Admin: admin@event.se / Admin123</p>
-          <p>User: user@event.se / User123</p>
-        </div>
       </div>
     </div>
   );

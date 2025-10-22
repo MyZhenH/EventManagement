@@ -94,6 +94,12 @@
 			<artifactId>hibernate-community-dialects</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+
         <!--
           Spring Boot Starter for Java Bean Validation.
           Includes Hibernate Validator and support for validation annotations like @NotBlank, @NotNull, etc.

@@ -1,0 +1,152 @@
+package com.example.EventManagement.service;
+
+import com.example.EventManagement.entity.Role;
+import com.example.EventManagement.entity.User;
+import com.example.EventManagement.payload.request.RegisterRequest;
+import com.example.EventManagement.repository.RoleRepository;
+import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.utils.PasswordUtil;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+
+@Service
+public class AuthService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+    }
+
+    /**
+     * Authenticating a user with email and password
+     */
+    public User authenticate(String email, String password) {
+        if (email == null || email.trim().isEmpty()) {
+            throw new RuntimeException("Email är obligatoriskt");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            throw new RuntimeException("Lösenord är obligatoriskt");
+        }
+
+        // Find user via email
+        User user = userRepository.findByEmail(email.trim().toLowerCase())
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Fel email eller lösenord"));
+
+        // Check if account is active
+        if (!user.isEnabled()) {
+            throw new RuntimeException("Kontot är inaktiverat");
+        }
+
+        // Validate password
+        if (!PasswordUtil.verifyPassword(password, user.getPassword())) {
+            throw new RuntimeException("Fel email eller lösenord");
+        }
+
+        return user;
+    }
+
+    /**
+     * Register new user
+     */
+    public User registerUser(RegisterRequest request) {
+        // Validate input
+        validateRegistrationInput(request);
+
+        String email = request.getEmail().trim().toLowerCase();
+
+        // Control if user already exists
+        if (userRepository.existsByEmail(email)) {
+            throw new RuntimeException("En användare med denna email finns redan");
+        }
+
+        // Find Participant-role
+        Role participantRole = roleRepository.findByRoleName("Participant")
+                .orElseThrow(() -> new RuntimeException("Standardroll 'Participant' hittades inte"));
+
+        // Creates new users
+        User user = new User();
+        user.setFirstName(request.getFirstName().trim());
+        user.setLastName(request.getLastName().trim());
+        user.setEmail(email);
+        user.setPassword(PasswordUtil.hashPassword(request.getPassword()));
+        user.setRegistrationDate(LocalDateTime.now());
+        user.setRole(participantRole);
+        user.setEnabled(true);
+
+        return userRepository.save(user);
+    }
+
+    /**
+     * Gets users with ID
+     */
+    public User getUserById(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("Användare hittades inte"));
+    }
+
+    /**
+     * Validates registration input
+     */
+    private void validateRegistrationInput(RegisterRequest request) {
+        if (request.getFirstName() == null || request.getFirstName().trim().isEmpty()) {
+            throw new RuntimeException("Förnamn är obligatoriskt");
+        }
+
+        if (request.getLastName() == null || request.getLastName().trim().isEmpty()) {
+            throw new RuntimeException("Efternamn är obligatoriskt");
+        }
+
+        if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
+            throw new RuntimeException("Email är obligatoriskt");
+        }
+
+        if (!isValidEmail(request.getEmail())) {
+            throw new RuntimeException("Ogiltig email-format");
+        }
+
+        if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
+            throw new RuntimeException("Lösenord är obligatoriskt");
+        }
+
+        validatePassword(request.getPassword());
+    }
+
+    /**
+     * Validate password according to security standards
+     */
+    private void validatePassword(String password) {
+        if (password.length() < 8) {
+            throw new RuntimeException("Lösenordet måste vara minst 8 tecken långt");
+        }
+
+        if (!password.matches(".*[A-Z].*")) {
+            throw new RuntimeException("Lösenordet måste innehålla minst en stor bokstav");
+        }
+
+        if (!password.matches(".*[a-z].*")) {
+            throw new RuntimeException("Lösenordet måste innehålla minst en liten bokstav");
+        }
+
+        if (!password.matches(".*[0-9].*")) {
+            throw new RuntimeException("Lösenordet måste innehålla minst en siffra");
+        }
+    }
+
+    /**
+     * Validate email
+     */
+    private boolean isValidEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+        return email.matches(emailRegex);
+    }
+}

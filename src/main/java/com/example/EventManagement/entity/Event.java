@@ -24,8 +24,8 @@ public class Event {
     private String description;
 
     @NotNull
-    @Column(name = "start_date")  // Matchar databaskolumnen
-    private LocalDateTime eventDate;  // Behåll variabelnamnet
+    @Column(name = "start_date")
+    private LocalDateTime eventDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
