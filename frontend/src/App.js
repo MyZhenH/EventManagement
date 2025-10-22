@@ -1,4 +1,3 @@
-// src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/layout/Navbar';
@@ -15,7 +14,7 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Routes>
-            {/* Publika routes - Alla kan se */}
+            {/* Public routes - Everyone can see */}
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
 
@@ -23,7 +22,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Skyddade routes - Kräver inloggning */}
+            {/* Protected routes - Required login */}
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
         </div>

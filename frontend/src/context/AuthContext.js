@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Kontrollera om användaren är inloggad när appen startar
+  // Control that the user is logged in when app starts
   useEffect(() => {
     checkAuth();
   }, []);
