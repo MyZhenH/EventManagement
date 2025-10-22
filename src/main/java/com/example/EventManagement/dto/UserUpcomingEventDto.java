@@ -115,7 +115,7 @@ public class UserUpcomingEventDto {
         this.participantStatus = participantStatus;
     }
 
-    // getters and setters
+
 }
 
 

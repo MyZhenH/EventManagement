@@ -14,12 +14,7 @@ public interface EventParticipantRepository extends JpaRepository <EventParticip
     List<EventParticipant> findByEvent_EventId(Long eventId);
     List<EventParticipant> findByUser_UserId(Long userId);
     List<EventParticipant> findByParticipantStatus_PStatusId(Long pStatusId);
-//    @Query("SELECT ep.event FROM EventParticipant ep " +
-//            "WHERE ep.user.userId = :userId " +
-//            "AND ep.participantStatus.pStatusId = :statusId " +
-//            "AND ep.event.eventDate >= CURRENT_TIMESTAMP")
-//    List<Event> findUpcomingEventsByUserAndStatus(@Param("userId") Long userId,
-//                                                  @Param("statusId") Long statusId);
+
 @Query("SELECT ep FROM EventParticipant ep " +
         "WHERE ep.user.userId = :userId " +
         "AND ep.participantStatus.pStatusId = :statusId " +
