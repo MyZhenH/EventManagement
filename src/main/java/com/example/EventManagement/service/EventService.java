@@ -3,6 +3,7 @@ package com.example.EventManagement.service;
 import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDTO;
 import com.example.EventManagement.dto.UserUpcomingEventDto;
+import com.example.EventManagement.dto.EventStatusDto;
 import com.example.EventManagement.entity.Category;
 import com.example.EventManagement.entity.Event;
 import com.example.EventManagement.entity.EventStatus;
@@ -13,7 +14,9 @@ import com.example.EventManagement.payload.request.EventUpdateRequest;
 import com.example.EventManagement.repository.*;
 import com.example.EventManagement.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -191,6 +194,31 @@ public class EventService {
         return eventStatusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
     }
+
+    public EventStatusDto newEventStatusAndMap(Long eventId, Long newStatusId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
+
+
+        EventStatus newStatus = eventStatusRepository.findById(newStatusId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Status not found"));
+
+
+        event.setEventStatus(newStatus);
+        Event updated = eventRepository.save(event);
+
+
+        // to resolve problem with load lazy fields
+        updated.getCreatedBy().getFirstName();
+        updated.getCategory().getCategoryName();
+        updated.getEventStatus().getStatusName();
+
+
+        return new EventStatusDto(updated);
+
+
+    }
+
     public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
         long registeredStatusId = 1L;
         List<Event> events = eventParticipantRepository.findUpcomingEventsByUserAndStatus(userId,registeredStatusId);
