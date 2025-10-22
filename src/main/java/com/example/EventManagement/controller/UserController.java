@@ -26,7 +26,6 @@ public class UserController {
         Map<String, String> response = userService.registerUser(user);
 
         if ("success".equals(response.get("status"))){
-            //(response.containsValue("success")) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
