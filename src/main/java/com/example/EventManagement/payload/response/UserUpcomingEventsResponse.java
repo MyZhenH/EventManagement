@@ -3,7 +3,7 @@ package com.example.EventManagement.payload.response;
 import com.example.EventManagement.dto.UserUpcomingEventDto;
 
 import java.util.List;
-
+// a wrapper class used to return a messege in  output not only data
 public class UserUpcomingEventsResponse {
     private String message;
     private List<UserUpcomingEventDto> events;

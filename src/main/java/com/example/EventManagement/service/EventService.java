@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -225,11 +226,17 @@ public class EventService {
 //    }
 public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
     long registeredStatusId = 1L;
-    List<EventParticipant> participants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+    List<EventParticipant> eventParticipants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+    for (EventParticipant p : eventParticipants) {
+        Event event = p.getEvent();
+        String participantStatus = p.getParticipantStatus().getStatusName();
+        UserUpcomingEventDto userupcomingeventdto = new UserUpcomingEventDto(event, participantStatus);
+        upcomingEvents.add(userupcomingeventdto); UserUpcomingEventDto userUpcomingEventdto= new UserUpcomingEventDto(event, participantStatus);
+        upcomingEvents.add(userUpcomingEventdto);
 
-    return participants.stream()
-            .map(ep -> new UserUpcomingEventDto(ep.getEvent(), ep.getParticipantStatus().getStatusName()))
-            .collect(Collectors.toList());
+    }
+    return upcomingEvents;
 }
 
 }
