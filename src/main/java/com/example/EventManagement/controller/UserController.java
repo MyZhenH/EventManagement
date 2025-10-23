@@ -47,7 +47,7 @@ public class UserController {
 
     @GetMapping("/{userId}/upcoming-events")
     public ResponseEntity<UserUpcomingEventsResponse> getUserUpcomingEvents(@PathVariable Long userId) {
-        List<UserUpcomingEventDto> events = eventService.getUpcomingEventsForUser(userId);
+        List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(userId);
 
         if (events.isEmpty()) {
             return ResponseEntity.ok(

@@ -238,19 +238,7 @@ public class EventService {
 //                .map(UserUpcomingEventDto::new)
 //                .collect(Collectors.toList());
 //    }
-public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-    long registeredStatusId = 1L;
-    List<EventParticipant> eventParticipants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
-    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
-    for (EventParticipant p : eventParticipants) {
-        Event event = p.getEvent();
-        String participantStatus = p.getParticipantStatus().getStatusName();
-        UserUpcomingEventDto userupcomingeventdto = new UserUpcomingEventDto(event, participantStatus);
-        upcomingEvents.add(userupcomingeventdto); UserUpcomingEventDto userUpcomingEventdto= new UserUpcomingEventDto(event, participantStatus);
-        upcomingEvents.add(userUpcomingEventdto);
 
-    }
-    return upcomingEvents;
-}
+
 
 }
