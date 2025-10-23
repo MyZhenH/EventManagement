@@ -161,7 +161,7 @@ public class UserService {
         return email.matches(emailRegex);
     }
     public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-        long registeredStatusId = 1L; // ensure this matches your DB data
+        long registeredStatusId = 2L;
 
         List<EventParticipant> eventParticipants =
                 eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
