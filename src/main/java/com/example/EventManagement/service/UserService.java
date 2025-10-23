@@ -194,7 +194,7 @@ public class UserService {
 //}
 public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
     List<EventParticipant> upcomingEventParticipants =
-            eventParticipantRepository.findUpcomingConfirmedEventsByUser(userId);
+            eventParticipantRepository.findUpcomingEventParticipants(userId);
 
     return upcomingEventParticipants.stream()
             .map(ep -> new UserUpcomingEventDto(ep.getEvent()))
