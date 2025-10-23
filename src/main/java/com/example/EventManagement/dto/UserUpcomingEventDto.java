@@ -107,9 +107,9 @@ public class UserUpcomingEventDto {
         this.eventId = event.getEventId();
         this.title = event.getTitle();
         this.location = event.getLocation();
-        this.eventDate = event.getEventDate();
-        //this.startDate = event.getStartDate();
-        //this.endDate = event.getEndDate();
+
+        this.startDate = event.getStartDate();
+        this.endDate = event.getEndDate();
         this.description = event.getDescription();
         this.eventStatus = event.getEventStatus().getStatusName();
         this.participantStatus = participantStatus;
