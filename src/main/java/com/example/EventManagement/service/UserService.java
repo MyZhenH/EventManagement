@@ -161,28 +161,20 @@ public class UserService {
         return email.matches(emailRegex);
     }
     public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-        long registeredStatusId = 2L;
-
+        // Gets all upcoming events for the user
         List<EventParticipant> eventParticipants =
-                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, 2L); // registeredStatusId if needed
 
         List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
 
         for (EventParticipant p : eventParticipants) {
             Event event = p.getEvent();
-            String participantStatus = p.getParticipantStatus().getStatusName();
-            UserUpcomingEventDto dto = new UserUpcomingEventDto(event, participantStatus);
+            UserUpcomingEventDto dto = new UserUpcomingEventDto(event);
             upcomingEvents.add(dto);
         }
 
         return upcomingEvents;
     }
 
-//public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-//       long registeredStatusId = 1L;
-//        List<Event> events = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId,registeredStatusId);
-//       return events.stream()
-//                .map(UserUpcomingEventDto::new)
-//                .collect(Collectors.toList());
-//   }
+
 }
