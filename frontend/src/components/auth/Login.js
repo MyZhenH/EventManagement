@@ -1,4 +1,3 @@
-// src/components/auth/Login.jsx
 import { useState } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';

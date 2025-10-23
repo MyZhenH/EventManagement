@@ -25,7 +25,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Användaren är inte inloggad
+      // User is not logged in
       console.log('Unauthorized - redirect to login may be needed');
     }
     return Promise.reject(error);
