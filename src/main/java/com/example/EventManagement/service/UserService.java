@@ -160,21 +160,37 @@ public class UserService {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
     }
-    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-        // Gets all upcoming events for the user
-        List<EventParticipant> eventParticipants =
-                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, 2L); // registeredStatusId if needed
+//    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+//        // Gets all upcoming events for the user
+//        List<EventParticipant> eventParticipants =
+//                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, 2L); // registeredStatusId if needed
+//
+//        List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+//
+//        for (EventParticipant p : eventParticipants) {
+//            Event event = p.getEvent();
+//            UserUpcomingEventDto dto = new UserUpcomingEventDto(event);
+//            upcomingEvents.add(dto);
+//        }
+//
+//        return upcomingEvents;
+//    }
+public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+    long confirmedStatusId = 1L;  //  Confirmed
 
-        List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+    List<EventParticipant> eventParticipants =
+            eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, confirmedStatusId);
 
-        for (EventParticipant p : eventParticipants) {
-            Event event = p.getEvent();
-            UserUpcomingEventDto dto = new UserUpcomingEventDto(event);
-            upcomingEvents.add(dto);
-        }
+    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
 
-        return upcomingEvents;
+    for (EventParticipant ep : eventParticipants) {
+        // participantStatus is added here but not added to DTO
+        upcomingEvents.add(new UserUpcomingEventDto(ep.getEvent()));
     }
+
+    return upcomingEvents;
+}
+
 
 
 }

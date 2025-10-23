@@ -14,14 +14,21 @@ public interface EventParticipantRepository extends JpaRepository <EventParticip
     List<EventParticipant> findByEvent_EventId(Long eventId);
     List<EventParticipant> findByUser_UserId(Long userId);
     List<EventParticipant> findByParticipantStatus_PStatusId(Long pStatusId);
-    @Query("SELECT ep FROM EventParticipant ep " +
-            "WHERE ep.user.userId = :userId " )
-//            "AND ep.participantStatus.pStatusId = :statusId " +
-//            "AND ep.event.startDate >= CURRENT_TIMESTAMP " +
-//            "ORDER BY ep.event.startDate ASC")
-    List<EventParticipant> findUpcomingEventParticipantsByUserAndStatus(
-            @Param("userId") Long userId,
-            @Param("statusId") Long statusId);
+//    @Query("SELECT ep FROM EventParticipant ep " +
+//            "WHERE ep.user.userId = :userId " )
+////            "AND ep.participantStatus.pStatusId = :statusId " +
+////            "AND ep.event.startDate >= CURRENT_TIMESTAMP " +
+////            "ORDER BY ep.event.startDate ASC")
+//    List<EventParticipant> findUpcomingEventParticipantsByUserAndStatus(
+//            @Param("userId") Long userId,
+//            @Param("statusId") Long statusId);
 
-
+@Query("SELECT ep FROM EventParticipant ep " +
+        "WHERE ep.user.userId = :userId " +
+        "AND ep.participantStatus.pStatusId = :statusId " +
+        "AND ep.event.startDate >= CURRENT_TIMESTAMP " +
+        "ORDER BY ep.event.startDate ASC")
+List<EventParticipant> findUpcomingEventParticipantsByUserAndStatus(
+        @Param("userId") Long userId,
+        @Param("statusId") Long statusId);
 }
