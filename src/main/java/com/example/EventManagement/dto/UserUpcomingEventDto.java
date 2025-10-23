@@ -23,8 +23,8 @@ public class UserUpcomingEventDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endDate;
 
-    @JsonProperty("status")  // only event status
-    private String Status;
+    @JsonProperty("status")  //  event status
+    private String status;
 
     public UserUpcomingEventDto() {
     }
@@ -36,9 +36,10 @@ public class UserUpcomingEventDto {
         this.description = event.getDescription();
         this.startDate = event.getStartDate();
         this.endDate = event.getEndDate();
-        this.Status = event.getEventStatus() != null
+        this.status = event.getEventStatus() != null
                 ? event.getEventStatus().getStatusName()
                 : null;
+
     }
 
     // Getters and setters
@@ -60,6 +61,6 @@ public class UserUpcomingEventDto {
     public LocalDateTime getEndDate() { return endDate; }
     public void setEndDate(LocalDateTime endDate) { this.endDate = endDate; }
 
-    public String getEventStatus() { return Status; }
-    public void setEventStatus(String eventStatus) { this.Status = eventStatus; }
+    public String getEventStatus() { return status; }
+    public void setEventStatus(String eventStatus) { this.status = eventStatus; }
 }
