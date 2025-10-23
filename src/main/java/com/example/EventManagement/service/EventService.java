@@ -1,20 +1,19 @@
 package com.example.EventManagement.service;
 
 import com.example.EventManagement.dto.EventBasicDto;
-import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.dto.EventDetailedDto;
 import com.example.EventManagement.dto.EventStatusDto;
 import com.example.EventManagement.entity.Category;
 import com.example.EventManagement.entity.Event;
 import com.example.EventManagement.entity.EventStatus;
 import com.example.EventManagement.entity.User;
 import com.example.EventManagement.payload.request.EventCreateRequest;
-import com.example.EventManagement.payload.response.EventResponseDto;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
+import com.example.EventManagement.payload.response.EventResponseDto;
 import com.example.EventManagement.repository.CategoryRepository;
 import com.example.EventManagement.repository.EventRepository;
 import com.example.EventManagement.repository.EventStatusRepository;
 import com.example.EventManagement.repository.UserRepository;
-import com.example.EventManagement.utils.DateUtils;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -45,15 +44,17 @@ public class EventService {
     }
 
     /**
-     * Retrieves a list of all events with basic information (title, location, and event date).
-     * <p>
-     * This method fetches all events from the repository and converts them into {@link EventBasicDto} objects.
-     * The resulting list includes only the title, location, and event date of each event.
-     * If the location or event date is not available, the method will default to "Not Determined" for location.
-     * </p>
+     * Retrieves a list of all events with basic information including ID, title, location,
+     * start date, and end date.
      *
-     * @return A list of {@link EventBasicDto} objects representing basic information about each event.
-     * If there are no events in the repository, an empty list will be returned.
+     * <p>This method fetches all event entities from the repository and converts each to an
+     * {@link EventBasicDto} containing raw event data. If the event location is not set,
+     * it defaults to the string "Not Determined". Dates are transferred as raw
+     * {@link java.time.LocalDateTime} objects without formatting, leaving presentation
+     * concerns to higher application layers.</p>
+     *
+     * @return a list of {@link EventBasicDto} objects representing basic event data.
+     * If the repository contains no events, returns an empty list.
      */
     public List<EventBasicDto> getAllEvents() {
         return eventRepository.findAll()
@@ -62,7 +63,8 @@ public class EventService {
                         event.getEventId(),
                         event.getTitle(),
                         event.getLocation() != null ? event.getLocation() : "Not Determined",
-                        DateUtils.formatEventDate(event.getEventDate())
+                        event.getStartDate(),
+                        event.getEndDate()
                 ))
                 .collect(Collectors.toList());
     }
@@ -75,19 +77,20 @@ public class EventService {
      * If no event is found with the given ID, the method returns {@code null}.
      * </p>
      *
-     * @return An {@link EventDetailedDTO} object containing detailed information about the event,
+     * @return An {@link EventDetailedDto} object containing detailed information about the event,
      * or {@code null} if no event is found with the provided ID.
      */
-    public EventDetailedDTO getEventById(Long eventId) {
+    public EventDetailedDto getEventById(Long eventId) {
         Optional<Event> event = eventRepository.findById(eventId);
 
         if (event.isPresent()) {
-            return new EventDetailedDTO(
+            return new EventDetailedDto(
                     event.get().getTitle(),
                     event.get().getLocation() != null ? event.get().getLocation() : "Not Determined",
-                    event.get().getEventDate(),
+                    event.get().getStartDate(),
+                    event.get().getEndDate(),
                     event.get().getDescription(),
-                    event.get().getEventStatus().getStatusName());
+                    event.get().getEventStatus());
         } else {
             return null;
         }
@@ -111,8 +114,12 @@ public class EventService {
             event.setDescription(eventUpdateRequest.description());
         }
 
-        if (eventUpdateRequest.eventDate() != null) {
-            event.setEventDate(eventUpdateRequest.eventDate());
+        if (eventUpdateRequest.startDate() != null) {
+            event.setStartDate(eventUpdateRequest.startDate());
+        }
+
+        if (eventUpdateRequest.endDate() != null) {
+            event.setStartDate(eventUpdateRequest.endDate());
         }
 
         if (eventUpdateRequest.location() != null) {
@@ -152,7 +159,8 @@ public class EventService {
                 event.getEventId(),
                 event.getTitle(),
                 event.getDescription(),
-                event.getEventDate(),
+                event.getStartDate(),
+                event.getEndDate(),
                 event.getLocation(),
                 event.getCreatedAt(),
                 event.getUpdatedAt(),
@@ -171,7 +179,8 @@ public class EventService {
 
         event.setTitle(dto.title());
         event.setDescription(dto.description());
-        event.setEventDate(dto.eventDate());
+        event.setStartDate(dto.startDate());
+        event.setEndDate(dto.endDate());
         event.setLocation(dto.location());
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
@@ -197,24 +206,17 @@ public class EventService {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));
 
-
         EventStatus newStatus = eventStatusRepository.findById(newStatusId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Status not found"));
-
 
         event.setEventStatus(newStatus);
         Event updated = eventRepository.save(event);
 
-
-        // to resolve problem with load lazy fields
+        // To resolve problem with load lazy fields
         updated.getCreatedBy().getFirstName();
         updated.getCategory().getCategoryName();
         updated.getEventStatus().getStatusName();
 
-
         return new EventStatusDto(updated);
-
-
     }
-
 }

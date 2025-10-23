@@ -25,7 +25,7 @@ public class Event {
 
     @NotNull
     @Column(name = "start_date")
-    private LocalDateTime eventDate;
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
@@ -64,14 +64,14 @@ public class Event {
 
     public Event() {}
 
-    public Event(String title, String description, LocalDateTime eventDate,
+    public Event(String description, LocalDateTime startDate, LocalDateTime endDate,
                  String location, LocalDateTime createdAt, LocalDateTime updatedAt,
                  User createdBy, User updatedBy, Category category,
-                 EventStatus eventStatus) {
+                 EventStatus eventStatus, String title) {
 
-        this.title = title;
         this.description = description;
-        this.eventDate = eventDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -79,6 +79,7 @@ public class Event {
         this.updatedBy = updatedBy;
         this.category = category;
         this.eventStatus = eventStatus;
+        this.title = title;
     }
 
     public Long getEventId() {
@@ -105,12 +106,20 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDateTime getEventDate() {
-        return eventDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setEventDate(LocalDateTime eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
