@@ -1,7 +1,7 @@
 import api from './api';
 
 export const eventService = {
-  // Event endpoints (publika)
+  // Event endpoints (public)
   getAllEvents: async () => {
     const response = await api.get('/events');
     return response.data;
@@ -12,7 +12,7 @@ export const eventService = {
     return response.data;
   },
 
-  // Participant endpoints (kräver inloggning)
+  // Participant endpoints (required login)
   registerForEvent: async (eventId) => {
     const response = await api.post(`/participants/register/${eventId}`);
     return response.data;
