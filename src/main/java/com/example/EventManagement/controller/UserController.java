@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Collections;
 import java.util.List;
@@ -89,5 +90,13 @@ public class UserController {
         return ResponseEntity.ok(
                 new UserUpcomingEventsResponse("coming events for you.", events)
         );
+    }
+    @PostMapping("/{userId}/unregister/{eventId}")
+    public ResponseEntity<Map<String, String>> unregister(@PathVariable Long userId,
+                                                          @PathVariable Long eventId) {
+        userService.unregisterUserFromEvent(userId, eventId);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "You have been unregistered from the event.");
+        return ResponseEntity.ok(response);
     }
 }

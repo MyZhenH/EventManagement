@@ -1,14 +1,13 @@
 package com.example.EventManagement.service;
 
 import com.example.EventManagement.dto.UserUpcomingEventDto;
-import com.example.EventManagement.entity.Event;
-import com.example.EventManagement.entity.EventParticipant;
-import com.example.EventManagement.entity.Role;
-import com.example.EventManagement.entity.User;
+import com.example.EventManagement.entity.*;
 import com.example.EventManagement.exception.PasswordException;
 import com.example.EventManagement.repository.EventParticipantRepository;
+import com.example.EventManagement.repository.ParticipantStatusRepository;
 import com.example.EventManagement.repository.RoleRepository;
 import com.example.EventManagement.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+    @Autowired
+    private ParticipantStatusRepository participantStatusRepository;
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -200,6 +201,19 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
             .map(ep -> new UserUpcomingEventDto(ep.getEvent()))
             .toList();  // Java 16+, otherwise use collect(Collectors.toList())
 }
+
+    public void unregisterUserFromEvent(Long userId, Long eventId) {
+        EventParticipant ep = eventParticipantRepository
+                .findByUserUserIdAndEventEventId(userId, eventId)
+                .orElseThrow(() -> new RuntimeException("User is not registered for this event"));
+
+        ParticipantStatus cancelledStatus = participantStatusRepository
+                .findByStatusName("Cancelled")
+                .orElseThrow(() -> new RuntimeException("Cancelled status not found"));
+
+        ep.setParticipantStatus(cancelledStatus);
+        eventParticipantRepository.save(ep);
+    }
 
 
 
