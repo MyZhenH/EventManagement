@@ -1,14 +1,20 @@
 package com.example.EventManagement.service;
 
+import com.example.EventManagement.dto.UserUpcomingEventDto;
+import com.example.EventManagement.entity.Event;
+import com.example.EventManagement.entity.EventParticipant;
 import com.example.EventManagement.entity.Role;
 import com.example.EventManagement.entity.User;
 import com.example.EventManagement.exception.PasswordException;
+import com.example.EventManagement.repository.EventParticipantRepository;
 import com.example.EventManagement.repository.RoleRepository;
 import com.example.EventManagement.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -16,10 +22,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final EventParticipantRepository eventParticipantRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository,EventParticipantRepository eventParticipantRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.eventParticipantRepository= eventParticipantRepository;
     }
 
     public Map<String, String> registerUser(User user) {
@@ -151,7 +159,21 @@ public class UserService {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
     }
+    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+        long registeredStatusId = 1L;
+        List<EventParticipant> eventParticipants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+        List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+        for (EventParticipant p : eventParticipants) {
+            Event event = p.getEvent();
+            String participantStatus = p.getParticipantStatus().getStatusName();
+            UserUpcomingEventDto userupcomingeventdto = new UserUpcomingEventDto(event, participantStatus);
+            upcomingEvents.add(userupcomingeventdto); UserUpcomingEventDto userUpcomingEventdto= new UserUpcomingEventDto(event, participantStatus);
+            upcomingEvents.add(userUpcomingEventdto);
+
+        }
+        return upcomingEvents;
 
 
 
+}
 }
