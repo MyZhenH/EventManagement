@@ -175,20 +175,30 @@ public class UserService {
 //
 //        return upcomingEvents;
 //    }
-public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-    long confirmedStatusId = 1L;  //  Confirmed
+//public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+//    long confirmedStatusId = 1L;  //  Confirmed
+//
+//    List<EventParticipant> eventParticipants =
+//            eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, confirmedStatusId);
+//
+//    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+//
+//    for (EventParticipant ep : eventParticipants) {
+//        // participantStatus is added here but not added to DTO
+//        upcomingEvents.add(new UserUpcomingEventDto(ep.getEvent()));
+//    }
+//
+//    return upcomingEvents;
 
-    List<EventParticipant> eventParticipants =
-            eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, confirmedStatusId);
 
-    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+//}
+public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
+    List<EventParticipant> upcomingEventParticipants =
+            eventParticipantRepository.findUpcomingConfirmedEventsByUser(userId);
 
-    for (EventParticipant ep : eventParticipants) {
-        // participantStatus is added here but not added to DTO
-        upcomingEvents.add(new UserUpcomingEventDto(ep.getEvent()));
-    }
-
-    return upcomingEvents;
+    return upcomingEventParticipants.stream()
+            .map(ep -> new UserUpcomingEventDto(ep.getEvent()))
+            .toList();  // Java 16+, otherwise use collect(Collectors.toList())
 }
 
 

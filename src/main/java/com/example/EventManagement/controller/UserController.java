@@ -45,21 +45,37 @@ public class UserController {
 
 
 
+//    @GetMapping("/{userId}/upcoming-events")
+//    public ResponseEntity<UserUpcomingEventsResponse> getUserUpcomingEvents(@PathVariable Long userId) {
+//        List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(userId);
+//
+//        if (events.isEmpty()) {
+//            return ResponseEntity.ok(
+//                    new UserUpcomingEventsResponse("No upcoming events.", Collections.emptyList())
+//            );
+//        }
+//
+//        return ResponseEntity.ok(
+//                new UserUpcomingEventsResponse("Upcoming events.", events)
+//        );
+
+
+
+
+    //}
+
     @GetMapping("/{userId}/upcoming-events")
     public ResponseEntity<UserUpcomingEventsResponse> getUserUpcomingEvents(@PathVariable Long userId) {
         List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(userId);
 
         if (events.isEmpty()) {
             return ResponseEntity.ok(
-                    new UserUpcomingEventsResponse("No upcoming events.", Collections.emptyList())
+                    new UserUpcomingEventsResponse("No upcoming events for you.", Collections.emptyList())
             );
         }
 
         return ResponseEntity.ok(
-                new UserUpcomingEventsResponse("Upcoming events.", events)
+                new UserUpcomingEventsResponse("coming events for you.", events)
         );
-
-
-
     }
 }
