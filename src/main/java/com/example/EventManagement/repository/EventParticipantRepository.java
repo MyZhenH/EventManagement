@@ -22,9 +22,9 @@ public interface EventParticipantRepository extends JpaRepository <EventParticip
 //List<EventParticipant> findUpcomingConfirmedEventsByUser(@Param("userId") Long userId);
 @Query("SELECT ep FROM EventParticipant ep " +
         "WHERE ep.user.userId = :userId " +
-        "AND ep.participantStatus.statusName = 'Confirmed' " +
+        "AND ep.participantStatus.statusName <> 'Cancelled' " +
         "AND ep.event.startDate >= CURRENT_TIMESTAMP " +
         "ORDER BY ep.event.startDate ASC")
-List<EventParticipant> findUpcomingConfirmedEventsByUser(@Param("userId") Long userId);
+List<EventParticipant> findUpcomingEventParticipants(@Param("userId") Long userId);
 
 }
