@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -160,20 +161,28 @@ public class UserService {
         return email.matches(emailRegex);
     }
     public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-        long registeredStatusId = 1L;
-        List<EventParticipant> eventParticipants = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+        long registeredStatusId = 1L; // ensure this matches your DB data
+
+        List<EventParticipant> eventParticipants =
+                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, registeredStatusId);
+
         List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
+
         for (EventParticipant p : eventParticipants) {
             Event event = p.getEvent();
             String participantStatus = p.getParticipantStatus().getStatusName();
-            UserUpcomingEventDto userupcomingeventdto = new UserUpcomingEventDto(event, participantStatus);
-            upcomingEvents.add(userupcomingeventdto); UserUpcomingEventDto userUpcomingEventdto= new UserUpcomingEventDto(event, participantStatus);
-            upcomingEvents.add(userUpcomingEventdto);
-
+            UserUpcomingEventDto dto = new UserUpcomingEventDto(event, participantStatus);
+            upcomingEvents.add(dto);
         }
+
         return upcomingEvents;
+    }
 
-
-
-}
+//public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
+//       long registeredStatusId = 1L;
+//        List<Event> events = eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId,registeredStatusId);
+//       return events.stream()
+//                .map(UserUpcomingEventDto::new)
+//                .collect(Collectors.toList());
+//   }
 }
