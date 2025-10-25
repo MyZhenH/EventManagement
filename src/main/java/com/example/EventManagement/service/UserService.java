@@ -3,6 +3,7 @@ package com.example.EventManagement.service;
 import com.example.EventManagement.dto.UserUpcomingEventDto;
 import com.example.EventManagement.entity.*;
 import com.example.EventManagement.exception.PasswordException;
+import com.example.EventManagement.payload.response.ApiResponseWrapper;
 import com.example.EventManagement.repository.EventParticipantRepository;
 import com.example.EventManagement.repository.ParticipantStatusRepository;
 import com.example.EventManagement.repository.RoleRepository;
@@ -185,7 +186,7 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
 //        eventParticipant.setParticipantStatus(cancelledStatus);
 //        eventParticipantRepository.save(eventParticipant);
 //    }
-public void unregisterUserFromEvent(Long userId, Long eventId) {
+public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long eventId) {
     EventParticipant eventParticipant = eventParticipantRepository
             .findByUserUserIdAndEventEventId(userId, eventId)
             .orElseThrow(() -> new ResponseStatusException(
@@ -201,5 +202,6 @@ public void unregisterUserFromEvent(Long userId, Long eventId) {
     eventParticipant.setParticipantStatus(cancelledStatus);
     eventParticipantRepository.save(eventParticipant);
 
-
-}}
+    return new ApiResponseWrapper<>("User successfully unregistered from event", null);
+}
+}

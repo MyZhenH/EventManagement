@@ -231,13 +231,6 @@ public class EventService {
 
     }
 
-//    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-//        long registeredStatusId = 1L;
-//        List<Event> events = eventParticipantRepository.findUpcomingEventsByUserAndStatus(userId,registeredStatusId);
-//        return events.stream()
-//                .map(UserUpcomingEventDto::new)
-//                .collect(Collectors.toList());
-//    }
 
 
 
