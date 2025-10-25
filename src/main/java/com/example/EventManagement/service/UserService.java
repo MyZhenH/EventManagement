@@ -8,7 +8,9 @@ import com.example.EventManagement.repository.ParticipantStatusRepository;
 import com.example.EventManagement.repository.RoleRepository;
 import com.example.EventManagement.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -171,19 +173,34 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
             .toList();
 }
 
-    public void unregisterUserFromEvent(Long userId, Long eventId) {
-        EventParticipant eventParticipant = eventParticipantRepository
-                .findByUserUserIdAndEventEventId(userId, eventId)
-                .orElseThrow(() -> new RuntimeException("The participant is not registered for this event"));
+//    public void unregisterUserFromEvent(Long userId, Long eventId) {
+//        EventParticipant eventParticipant = eventParticipantRepository
+//                .findByUserUserIdAndEventEventId(userId, eventId)
+//                .orElseThrow(() -> new RuntimeException("The participant is not registered for this event"));
+//
+//        ParticipantStatus cancelledStatus = participantStatusRepository
+//                .findByStatusName("Cancelled")
+//                .orElseThrow(() -> new RuntimeException("Cancelled status not found"));
+//
+//        eventParticipant.setParticipantStatus(cancelledStatus);
+//        eventParticipantRepository.save(eventParticipant);
+//    }
+public void unregisterUserFromEvent(Long userId, Long eventId) {
+    EventParticipant eventParticipant = eventParticipantRepository
+            .findByUserUserIdAndEventEventId(userId, eventId)
+            .orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.BAD_REQUEST, "The participant is not registered for this event")
+            );
 
-        ParticipantStatus cancelledStatus = participantStatusRepository
-                .findByStatusName("Cancelled")
-                .orElseThrow(() -> new RuntimeException("Cancelled status not found"));
+    ParticipantStatus cancelledStatus = participantStatusRepository
+            .findByStatusName("Cancelled")
+            .orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cancelled status not found")
+            );
 
-        eventParticipant.setParticipantStatus(cancelledStatus);
-        eventParticipantRepository.save(eventParticipant);
-    }
-
+    eventParticipant.setParticipantStatus(cancelledStatus);
+    eventParticipantRepository.save(eventParticipant);
+}
 
 
 }
