@@ -161,58 +161,27 @@ public class UserService {
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
     }
-//    public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-//        // Gets all upcoming events for the user
-//        List<EventParticipant> eventParticipants =
-//                eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, 2L); // registeredStatusId if needed
-//
-//        List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
-//
-//        for (EventParticipant p : eventParticipants) {
-//            Event event = p.getEvent();
-//            UserUpcomingEventDto dto = new UserUpcomingEventDto(event);
-//            upcomingEvents.add(dto);
-//        }
-//
-//        return upcomingEvents;
-//    }
-//public List<UserUpcomingEventDto> getUpcomingEventsForUser(long userId) {
-//    long confirmedStatusId = 1L;  //  Confirmed
-//
-//    List<EventParticipant> eventParticipants =
-//            eventParticipantRepository.findUpcomingEventParticipantsByUserAndStatus(userId, confirmedStatusId);
-//
-//    List<UserUpcomingEventDto> upcomingEvents = new ArrayList<>();
-//
-//    for (EventParticipant ep : eventParticipants) {
-//        // participantStatus is added here but not added to DTO
-//        upcomingEvents.add(new UserUpcomingEventDto(ep.getEvent()));
-//    }
-//
-//    return upcomingEvents;
 
-
-//}
 public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
     List<EventParticipant> upcomingEventParticipants =
             eventParticipantRepository.findUpcomingEventParticipants(userId);
 
     return upcomingEventParticipants.stream()
-            .map(ep -> new UserUpcomingEventDto(ep.getEvent()))
-            .toList();  // Java 16+, otherwise use collect(Collectors.toList())
+            .map(eventParticipant -> new UserUpcomingEventDto(eventParticipant.getEvent()))
+            .toList();
 }
 
     public void unregisterUserFromEvent(Long userId, Long eventId) {
-        EventParticipant ep = eventParticipantRepository
+        EventParticipant eventParticipant = eventParticipantRepository
                 .findByUserUserIdAndEventEventId(userId, eventId)
-                .orElseThrow(() -> new RuntimeException("User is not registered for this event"));
+                .orElseThrow(() -> new RuntimeException("The participant is not registered for this event"));
 
         ParticipantStatus cancelledStatus = participantStatusRepository
                 .findByStatusName("Cancelled")
                 .orElseThrow(() -> new RuntimeException("Cancelled status not found"));
 
-        ep.setParticipantStatus(cancelledStatus);
-        eventParticipantRepository.save(ep);
+        eventParticipant.setParticipantStatus(cancelledStatus);
+        eventParticipantRepository.save(eventParticipant);
     }
 
 

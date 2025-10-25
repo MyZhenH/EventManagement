@@ -83,12 +83,12 @@ public class UserController {
 
         if (events.isEmpty()) {
             return ResponseEntity.ok(
-                    new UserUpcomingEventsResponse("No upcoming events for you.", Collections.emptyList())
+                    new UserUpcomingEventsResponse("No upcoming events .", Collections.emptyList())
             );
         }
 
         return ResponseEntity.ok(
-                new UserUpcomingEventsResponse("coming events for you.", events)
+                new UserUpcomingEventsResponse("coming events .", events)
         );
     }
     @PostMapping("/{userId}/unregister/{eventId}")
