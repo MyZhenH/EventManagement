@@ -188,19 +188,18 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
 public void unregisterUserFromEvent(Long userId, Long eventId) {
     EventParticipant eventParticipant = eventParticipantRepository
             .findByUserUserIdAndEventEventId(userId, eventId)
-            .orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.BAD_REQUEST, "The participant is not registered for this event")
-            );
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "The participant is not registered for this event"
+            ));
 
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
-            .orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Cancelled status not found")
-            );
+            .orElseThrow(() -> new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Cancelled status not found"
+            ));
 
     eventParticipant.setParticipantStatus(cancelledStatus);
     eventParticipantRepository.save(eventParticipant);
-}
 
 
-}
+}}
