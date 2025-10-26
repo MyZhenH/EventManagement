@@ -2,6 +2,7 @@ package com.example.EventManagement.controller;
 
 import com.example.EventManagement.dto.UserUpcomingEventDto;
 import com.example.EventManagement.entity.User;
+import com.example.EventManagement.payload.response.ApiResponseWrapper;
 import com.example.EventManagement.payload.response.UserUpcomingEventsResponse;
 import com.example.EventManagement.service.EventService;
 import com.example.EventManagement.service.UserService;
@@ -91,12 +92,20 @@ public class UserController {
                 new UserUpcomingEventsResponse("coming events .", events)
         );
     }
-    @PostMapping("/{userId}/unregister/{eventId}")
-    public ResponseEntity<Map<String, String>> unregister(@PathVariable Long userId,
-                                                          @PathVariable Long eventId) {
-        userService.unregisterUserFromEvent(userId, eventId);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "You have been unregistered from the event.");
-        return ResponseEntity.ok(response);
+//    @PostMapping("/{userId}/unregister/{eventId}")
+//    public ResponseEntity<Map<String, String>> unregister(@PathVariable Long userId,
+//                                                          @PathVariable Long eventId) {
+//        userService.unregisterUserFromEvent(userId, eventId);
+//        Map<String, String> response = new HashMap<>();
+//        response.put("message", "You have been unregistered from the event.");
+//        return ResponseEntity.ok(response);
+//    }
+
+    @PostMapping("/api/users/{userId}/unregister/{eventId}")
+    public ApiResponseWrapper<String> unregister(
+            @PathVariable Long userId,
+            @PathVariable Long eventId
+    ) {
+        return userService.unregisterUserFromEvent(userId, eventId);
     }
 }

@@ -202,6 +202,6 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
     eventParticipant.setParticipantStatus(cancelledStatus);
     eventParticipantRepository.save(eventParticipant);
 
-    return new ApiResponseWrapper<>("User successfully unregistered from event", null);
+    return new ApiResponseWrapper<>("SUCCESS", "User successfully unregistered from event", null);
 }
 }
