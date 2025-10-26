@@ -1,6 +1,8 @@
 package com.example.EventManagement.dto;
 
 import com.example.EventManagement.entity.EventStatus;
+import com.example.EventManagement.utils.DateUtils;
+
 import java.time.LocalDateTime;
 
 /**
@@ -20,21 +22,24 @@ import java.time.LocalDateTime;
 public class EventDetailedDto {
     private String title;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String eventDate;
     private String location;
-    private EventStatus eventStatus;
+    private String eventStatus;
+    private String address;
+    private String city;
 
-    public EventDetailedDto() {}
+    public EventDetailedDto() {
+    }
 
     public EventDetailedDto(String title, String description, LocalDateTime startDate,
-                            LocalDateTime endDate, String location, EventStatus eventStatus) {
+                            LocalDateTime endDate, String location, String address, String city, String eventStatus) {
 
         this.title = title;
         this.description = description;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.eventDate = DateUtils.formatEventDate(startDate, endDate);
         this.location = location;
+        this.address = address;
+        this.city = city;
         this.eventStatus = eventStatus;
     }
 
@@ -54,20 +59,12 @@ public class EventDetailedDto {
         this.description = description;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public String getEventDate() {
+        return eventDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public void setEventDate(LocalDateTime startDate, LocalDateTime endDate) {
+        this.eventDate = DateUtils.formatEventDate(startDate, endDate);
     }
 
     public String getLocation() {
@@ -78,11 +75,28 @@ public class EventDetailedDto {
         this.location = location;
     }
 
-    public EventStatus getEventStatus() {
+    public String getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(EventStatus eventStatus) {
+    public void setEventStatus(String eventStatus) {
         this.eventStatus = eventStatus;
     }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 }

@@ -10,10 +10,7 @@ import com.example.EventManagement.entity.User;
 import com.example.EventManagement.payload.request.EventCreateRequest;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
 import com.example.EventManagement.payload.response.EventResponseDto;
-import com.example.EventManagement.repository.CategoryRepository;
-import com.example.EventManagement.repository.EventRepository;
-import com.example.EventManagement.repository.EventStatusRepository;
-import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -60,11 +57,12 @@ public class EventService {
         return eventRepository.findAll()
                 .stream()
                 .map(event -> new EventBasicDto(
-                        event.getEventId(),
                         event.getTitle(),
                         event.getLocation() != null ? event.getLocation() : "Not Determined",
                         event.getStartDate(),
-                        event.getEndDate()
+                        event.getEndDate(),
+                        event.getCity() != null ? event.getCity().getCityName() : "Unknown"
+
                 ))
                 .collect(Collectors.toList());
     }
@@ -86,11 +84,14 @@ public class EventService {
         if (event.isPresent()) {
             return new EventDetailedDto(
                     event.get().getTitle(),
-                    event.get().getLocation() != null ? event.get().getLocation() : "Not Determined",
+                    event.get().getDescription(),
                     event.get().getStartDate(),
                     event.get().getEndDate(),
-                    event.get().getDescription(),
-                    event.get().getEventStatus());
+                    event.get().getLocation() != null ? event.get().getLocation() : "Not Determined",
+                    event.get().getAddress() != null ? event.get().getAddress() : "Unknown",
+                    event.get().getCity() != null ? event.get().getCity().getCityName() : "Unknown",
+                    event.get().getEventStatus() != null ? event.get().getEventStatus().getStatusName() : "Not Determined");
+
         } else {
             return null;
         }

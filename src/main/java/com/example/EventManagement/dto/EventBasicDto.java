@@ -1,5 +1,7 @@
 package com.example.EventManagement.dto;
 
+import com.example.EventManagement.utils.DateUtils;
+
 import java.time.LocalDateTime;
 
 /**
@@ -15,31 +17,22 @@ import java.time.LocalDateTime;
  */
 public class EventBasicDto {
 
-    private Long eventId;
     private String title;
     private String location;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private String eventDate;
+    private String city;
 
     public EventBasicDto() {}
 
-    public EventBasicDto(Long eventId, String title, String location,
-                         LocalDateTime startDate, LocalDateTime endDate) {
+    public EventBasicDto(String title, String location,
+                         LocalDateTime startDate, LocalDateTime endDate, String city) {
 
-        this.eventId = eventId;
         this.title = title;
         this.location = location;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.eventDate = DateUtils.formatEventDate(startDate, endDate);
+        this.city = city;
     }
 
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
 
     public String getTitle() {
         return title;
@@ -57,19 +50,19 @@ public class EventBasicDto {
         this.location = location;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public String getEventDate() {
+        return eventDate;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setEventDate(LocalDateTime startDate, LocalDateTime endDate) {
+        this.eventDate = DateUtils.formatEventDate(startDate, endDate);
     }
 
-    public LocalDateTime getEndDate() {
-        return endDate;
+    public String getCity() {
+        return city;
     }
 
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
+    public void setCity(String city) {
+        this.city = city;
     }
 }

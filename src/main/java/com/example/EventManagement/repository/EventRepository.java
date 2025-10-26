@@ -21,5 +21,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findByEventStatus_EventStatusId(Long eventStatusId);
     @Query("SELECT e FROM Event e WHERE e.eventStatus.statusName = :statusName")
     Optional<Event> findByStatusName(@Param("statusName") String statusName);
+    List<Event> findByCity_CityName(String cityName);
+
 
 }

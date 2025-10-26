@@ -27,8 +27,19 @@ public class DateUtils {
         } else if (startDate == null) {
             return endDate.format(FORMATTER);
         } else {
-            // Both are not null — format as range
-            return startDate.format(FORMATTER) + " - " + endDate.format(FORMATTER);
+
+            // If it's the same day: show date once + start and end time
+            if (startDate.toLocalDate().equals(endDate.toLocalDate())) {
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM");
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                return startDate.format(dateFormatter) + " "
+                        + startDate.format(timeFormatter) + " - "
+                        + endDate.format(timeFormatter);
+
+            } else {
+                // If it's different days: show both start and end dates with times
+                return startDate.format(FORMATTER) + " - " + endDate.format(FORMATTER);
+            }
         }
     }
 }
