@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,35 +27,18 @@ public class GlobalExceptionHandler {
         ApiResponseWrapper<String> response = new ApiResponseWrapper<>("ERROR", message, null);
         return ResponseEntity.status(status).body(response);
     }
-//    @ExceptionHandler(ResponseStatusException.class)
-//    public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
-//        ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
-//                "ERROR",
-//                ex.getReason(),
-//                null
-//        );
-//        return new ResponseEntity<>(response, ex.getStatusCode());
-//    }
-@ExceptionHandler(ResponseStatusException.class)
-public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
-    ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
-            "ERROR",
-            ex.getReason(),
-            null
-    );
-    return ResponseEntity.status(ex.getStatusCode()).body(response);
-}
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
+        logger.warn("Handled ResponseStatusException: {}", ex.getReason());
+        return buildError(ex.getStatusCode(), ex.getReason());
+    }
 
-    //    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
-//        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
-//    }
-@ExceptionHandler(Exception.class)
-public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
-    ex.printStackTrace(); // log it
-    return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
-}
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
+        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+    }
 
 
 
