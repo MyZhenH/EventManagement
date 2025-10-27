@@ -19,7 +19,7 @@ function EventCard({ event }) {
         <div className="event-info">
           <div className="event-info-item">
             <span className="info-icon">📅</span>
-            <span>{event.eventDate || 'Datum ej angivet'}</span>
+            <span>{event.eventDate || 'Date not specified'}</span>
           </div>
 
           <div className="event-info-item">

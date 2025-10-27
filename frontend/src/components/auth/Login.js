@@ -24,7 +24,7 @@ const Login = () => {
     if (result.success) {
       navigate(from, { replace: true });
     } else {
-      setError(result.message || 'Inloggning misslyckades');
+      setError(result.message || 'Login Failed');
     }
 
     setLoading(false);
@@ -38,7 +38,7 @@ const Login = () => {
           <p className="auth-subtitle">
             Eller{' '}
             <Link to="/register" className="auth-link">
-              skapa ett nytt konto
+              create a new account
             </Link>
           </p>
         </div>
@@ -60,7 +60,7 @@ const Login = () => {
               type="email"
               required
               className="form-input"
-              placeholder="din.email@exempel.com"
+              placeholder="your.email@exemple.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -68,7 +68,7 @@ const Login = () => {
 
           <div className="form-group">
             <label htmlFor="password" className="form-label">
-              Lösenord
+              Password
             </label>
             <input
               id="password"
@@ -88,13 +88,13 @@ const Login = () => {
               disabled={loading}
               className="btn btn-primary btn-full"
             >
-              {loading ? 'Loggar in...' : 'Logga in'}
+              {loading ? 'Logging in...' : 'Log in'}
             </button>
           </div>
 
           <div className="text-center">
             <Link to="/" className="auth-link">
-              ← Tillbaka till evenemang
+              ← Back to events
             </Link>
           </div>
         </form>
