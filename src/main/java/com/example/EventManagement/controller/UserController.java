@@ -72,6 +72,22 @@ public class UserController {
         );
     }
 
+    /**
+     * This endpoint unregisters a user from a specific event.
+     * Logic explanation:
+     * - First, it checks if the user is registered for the event and has a participant status other than "Cancelled".
+     *   - If not registered, it throws a ResponseStatusException (a relevant message and status).
+     * - Then, it fetches the "Cancelled" status from the ParticipantStatus table to assign and update to unregister.
+     *   - If the "Cancelled" status is missing, it throws a ResponseStatusException.
+     * - Updates the EventParticipant entity to set the participant status to "Cancelled".
+     * - Saves the updated entity in the database.
+     *
+     * Result:
+     * - If successful, the user’s participation in the event is marked as cancelled.
+     * - If the user was not registered, the response will indicate an error.
+     * - This ensures that users cannot unregister from events they are not registered for.
+     */
+
     @PostMapping("/{userId}/unregister/{eventId}")
     public ApiResponseWrapper<String> unregister(
             @PathVariable Long userId,

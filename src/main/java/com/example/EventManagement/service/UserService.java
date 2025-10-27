@@ -173,7 +173,7 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
             .map(eventParticipant -> new UserUpcomingEventDto(eventParticipant.getEvent()))
             .toList();
 }
-
+   // Before updating checks if the user is actually registered:
 public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long eventId) {
     EventParticipant eventParticipant = eventParticipantRepository
             .findByUserUserIdAndEventEventId(userId, eventId)
@@ -185,7 +185,7 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
             .orElseThrow(() -> new ResponseStatusException(
-                    // Throws a ResponseStatusException (400) if no status found.
+                    // Throws a ResponseStatusException (400) if  status is not found.
                     HttpStatus.BAD_REQUEST, "Cancelled status not found"
             ));
 
