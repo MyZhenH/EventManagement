@@ -24,12 +24,15 @@ public class GlobalExceptionHandler {
         ApiResponseWrapper<String> response = new ApiResponseWrapper<>("ERROR", message, null);
         return ResponseEntity.status(status).body(response);
     }
-
     @ExceptionHandler(ResponseStatusException.class)
     public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
-        return buildError(ex.getStatusCode(), ex.getReason());
+        ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
+                "ERROR",
+                ex.getReason(),
+                null
+        );
+        return new ResponseEntity<>(response, ex.getStatusCode());
     }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
         return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
