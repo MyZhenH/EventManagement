@@ -31,23 +31,33 @@ CREATE TABLE users(
     FOREIGN KEY (role_id) REFERENCES roles (role_id)
 );
 
-CREATE TABLE events(
+CREATE TABLE cities (
+    city_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    city_name TEXT NOT NULL,
+    state TEXT,
+    country TEXT
+);
+
+CREATE TABLE events (
     event_id INTEGER PRIMARY KEY AUTOINCREMENT,
     title TEXT NOT NULL,
     description TEXT NOT NULL,
+    location TEXT NOT NULL,
+    address TEXT,
+    city_id INTEGER,
     start_date DATETIME,
     end_date DATETIME,
-    location TEXT NOT NULL,
     created_at DATETIME,
     updated_at DATETIME,
     created_by INTEGER,
     updated_by INTEGER,
     category_id INTEGER,
     event_status_id INTEGER,
-    FOREIGN KEY (created_by) REFERENCES users (user_id),
-    FOREIGN KEY (updated_by) REFERENCES users (user_id),
-    FOREIGN KEY (category_id) REFERENCES categories (category_id),
-    FOREIGN KEY (event_status_id) REFERENCES event_statuses (event_status_id)
+    FOREIGN KEY (created_by) REFERENCES users(user_id),
+    FOREIGN KEY (updated_by) REFERENCES users(user_id),
+    FOREIGN KEY (category_id) REFERENCES categories(category_id),
+    FOREIGN KEY (event_status_id) REFERENCES event_statuses(event_status_id),
+    FOREIGN KEY (city_id) REFERENCES cities(city_id)
 );
 
 CREATE TABLE event_participants(
