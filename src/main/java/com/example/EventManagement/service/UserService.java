@@ -174,18 +174,6 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
             .toList();
 }
 
-//    public void unregisterUserFromEvent(Long userId, Long eventId) {
-//        EventParticipant eventParticipant = eventParticipantRepository
-//                .findByUserUserIdAndEventEventId(userId, eventId)
-//                .orElseThrow(() -> new RuntimeException("The participant is not registered for this event"));
-//
-//        ParticipantStatus cancelledStatus = participantStatusRepository
-//                .findByStatusName("Cancelled")
-//                .orElseThrow(() -> new RuntimeException("Cancelled status not found"));
-//
-//        eventParticipant.setParticipantStatus(cancelledStatus);
-//        eventParticipantRepository.save(eventParticipant);
-//    }
 public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long eventId) {
     EventParticipant eventParticipant = eventParticipantRepository
             .findByUserUserIdAndEventEventId(userId, eventId)
@@ -193,15 +181,18 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
                     HttpStatus.BAD_REQUEST, "The participant is not registered for this event"
             ));
 
+    // Retrieves the "Cancelled" status from the ParticipantStatus table to make en  update.
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
             .orElseThrow(() -> new ResponseStatusException(
+                    // Throws a ResponseStatusException (400) if no status found.
                     HttpStatus.BAD_REQUEST, "Cancelled status not found"
             ));
 
     eventParticipant.setParticipantStatus(cancelledStatus);
+    // Save the updated EventParticipant entity to persist the change in database
     eventParticipantRepository.save(eventParticipant);
-
+//   Then Return a success message wrapped in ApiResponseWrapper
     return new ApiResponseWrapper<>("SUCCESS", "User successfully unregistered from event", null);
 }
 

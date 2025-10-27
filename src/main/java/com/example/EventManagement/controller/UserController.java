@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
+
 import java.util.Map;
 import java.util.Collections;
 import java.util.List;
@@ -44,27 +44,6 @@ public class UserController {
         } else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-
-
-
-//    @GetMapping("/{userId}/upcoming-events")
-//    public ResponseEntity<UserUpcomingEventsResponse> getUserUpcomingEvents(@PathVariable Long userId) {
-//        List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(userId);
-//
-//        if (events.isEmpty()) {
-//            return ResponseEntity.ok(
-//                    new UserUpcomingEventsResponse("No upcoming events.", Collections.emptyList())
-//            );
-//        }
-//
-//        return ResponseEntity.ok(
-//                new UserUpcomingEventsResponse("Upcoming events.", events)
-//        );
-
-
-
-
-    //}
     /**
      * This end point fetches the upcoming events for a given user.
      * Logic explanation:
@@ -92,14 +71,6 @@ public class UserController {
                 new UserUpcomingEventsResponse("coming events .", events)
         );
     }
-//    @PostMapping("/{userId}/unregister/{eventId}")
-//    public ResponseEntity<Map<String, String>> unregister(@PathVariable Long userId,
-//                                                          @PathVariable Long eventId) {
-//        userService.unregisterUserFromEvent(userId, eventId);
-//        Map<String, String> response = new HashMap<>();
-//        response.put("message", "You have been unregistered from the event.");
-//        return ResponseEntity.ok(response);
-//    }
 
     @PostMapping("/{userId}/unregister/{eventId}")
     public ApiResponseWrapper<String> unregister(
