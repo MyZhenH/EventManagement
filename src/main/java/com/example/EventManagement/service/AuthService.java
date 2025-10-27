@@ -26,27 +26,27 @@ public class AuthService {
      */
     public User authenticate(String email, String password) {
         if (email == null || email.trim().isEmpty()) {
-            throw new RuntimeException("Email är obligatoriskt");
+            throw new RuntimeException("Email is mandatory");
         }
 
         if (password == null || password.trim().isEmpty()) {
-            throw new RuntimeException("Lösenord är obligatoriskt");
+            throw new RuntimeException("Password is mandatory");
         }
 
         // Find user via email
         User user = userRepository.findByEmail(email.trim().toLowerCase())
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Fel email eller lösenord"));
+                .orElseThrow(() -> new RuntimeException("Wrong email or password"));
 
         // Check if account is active
         if (!user.isEnabled()) {
-            throw new RuntimeException("Kontot är inaktiverat");
+            throw new RuntimeException("Account is inactive");
         }
 
         // Validate password
         if (!PasswordUtil.verifyPassword(password, user.getPassword())) {
-            throw new RuntimeException("Fel email eller lösenord");
+            throw new RuntimeException("Wrong email or password");
         }
 
         return user;
@@ -63,7 +63,7 @@ public class AuthService {
 
         // Control if user already exists
         if (userRepository.existsByEmail(email)) {
-            throw new RuntimeException("En användare med denna email finns redan");
+            throw new RuntimeException("Account with the same email is already registered");
         }
 
         // Find Participant-role
@@ -88,7 +88,7 @@ public class AuthService {
      */
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Användare hittades inte"));
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     /**
@@ -96,23 +96,23 @@ public class AuthService {
      */
     private void validateRegistrationInput(RegisterRequest request) {
         if (request.getFirstName() == null || request.getFirstName().trim().isEmpty()) {
-            throw new RuntimeException("Förnamn är obligatoriskt");
+            throw new RuntimeException("First name is mandatory");
         }
 
         if (request.getLastName() == null || request.getLastName().trim().isEmpty()) {
-            throw new RuntimeException("Efternamn är obligatoriskt");
+            throw new RuntimeException("Lat name is mandatory");
         }
 
         if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
-            throw new RuntimeException("Email är obligatoriskt");
+            throw new RuntimeException("Email is mandatory");
         }
 
         if (!isValidEmail(request.getEmail())) {
-            throw new RuntimeException("Ogiltig email-format");
+            throw new RuntimeException("Invalid email-format");
         }
 
         if (request.getPassword() == null || request.getPassword().trim().isEmpty()) {
-            throw new RuntimeException("Lösenord är obligatoriskt");
+            throw new RuntimeException("Password is mandatory");
         }
 
         validatePassword(request.getPassword());
@@ -123,19 +123,19 @@ public class AuthService {
      */
     private void validatePassword(String password) {
         if (password.length() < 8) {
-            throw new RuntimeException("Lösenordet måste vara minst 8 tecken långt");
+            throw new RuntimeException("Password needs to be atleast 8 characters long");
         }
 
         if (!password.matches(".*[A-Z].*")) {
-            throw new RuntimeException("Lösenordet måste innehålla minst en stor bokstav");
+            throw new RuntimeException("Password needs to contain atleast one big letter");
         }
 
         if (!password.matches(".*[a-z].*")) {
-            throw new RuntimeException("Lösenordet måste innehålla minst en liten bokstav");
+            throw new RuntimeException("Password needs to contain atleast one small letter");
         }
 
         if (!password.matches(".*[0-9].*")) {
-            throw new RuntimeException("Lösenordet måste innehålla minst en siffra");
+            throw new RuntimeException("Password needs to contain atleast one number");
         }
     }
 

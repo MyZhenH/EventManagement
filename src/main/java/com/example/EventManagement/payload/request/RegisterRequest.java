@@ -6,18 +6,18 @@ import jakarta.validation.constraints.Size;
 
 public class RegisterRequest {
 
-    @NotBlank(message = "Förnamn är obligatoriskt")
+    @NotBlank(message = "First name is mandatory")
     private String firstName;
 
-    @NotBlank(message = "Efternamn är obligatoriskt")
+    @NotBlank(message = "Last name is mandatory")
     private String lastName;
 
-    @NotBlank(message = "Email är obligatoriskt")
-    @Email(message = "Ogiltig email-format")
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Invalid email-format")
     private String email;
 
-    @NotBlank(message = "Lösenord är obligatoriskt")
-    @Size(min = 8, message = "Lösenordet måste vara minst 8 tecken")
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 8, message = "Password needs to be atleast 8 characters")
     private String password;
 
     public RegisterRequest(String firstName, String lastName, String email, String password) {

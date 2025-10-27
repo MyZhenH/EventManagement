@@ -71,7 +71,7 @@ public class AuthController {
             User user = authService.registerUser(registerRequest);
 
             response.put("success", true);
-            response.put("message", "Registrering lyckades! Du kan nu logga in.");
+            response.put("message", "Registration Complete! You can now login.");
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -89,7 +89,7 @@ public class AuthController {
         session.invalidate();
 
         response.put("success", true);
-        response.put("message", "Utloggning lyckades");
+        response.put("message", "Logout complete");
 
         return ResponseEntity.ok(response);
     }
