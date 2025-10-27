@@ -101,7 +101,7 @@ public class UserController {
 //        return ResponseEntity.ok(response);
 //    }
 
-    @PostMapping("/api/users/{userId}/unregister/{eventId}")
+    @PostMapping("/{userId}/unregister/{eventId}")
     public ApiResponseWrapper<String> unregister(
             @PathVariable Long userId,
             @PathVariable Long eventId
