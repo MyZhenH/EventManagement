@@ -182,6 +182,11 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
             .orElseThrow(() -> new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "The participant is not registered for this event"
             ));
+    if (eventParticipant.getEvent().getStartDate().isBefore(LocalDateTime.now())) {
+        throw new ResponseStatusException(
+                HttpStatus.BAD_REQUEST, "You cannot unregister from an event that has already passed"
+        );
+    }
     // Retrieves the "Cancelled" status from the ParticipantStatus table to make en  update.
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
