@@ -204,4 +204,5 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
 
     return new ApiResponseWrapper<>("SUCCESS", "User successfully unregistered from event", null);
 }
+
 }
