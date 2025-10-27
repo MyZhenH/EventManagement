@@ -24,19 +24,36 @@ public class GlobalExceptionHandler {
         ApiResponseWrapper<String> response = new ApiResponseWrapper<>("ERROR", message, null);
         return ResponseEntity.status(status).body(response);
     }
-    @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
-        ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
-                "ERROR",
-                ex.getReason(),
-                null
-        );
-        return new ResponseEntity<>(response, ex.getStatusCode());
-    }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
-        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
-    }
+//    @ExceptionHandler(ResponseStatusException.class)
+//    public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
+//        ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
+//                "ERROR",
+//                ex.getReason(),
+//                null
+//        );
+//        return new ResponseEntity<>(response, ex.getStatusCode());
+//    }
+@ExceptionHandler(ResponseStatusException.class)
+public ResponseEntity<ApiResponseWrapper<String>> handleResponseStatusException(ResponseStatusException ex) {
+    ApiResponseWrapper<String> response = new ApiResponseWrapper<>(
+            "ERROR",
+            ex.getReason(),
+            null
+    );
+    return ResponseEntity.status(ex.getStatusCode()).body(response);
+}
+
+
+    //    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
+//        return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+//    }
+@ExceptionHandler(Exception.class)
+public ResponseEntity<ApiResponseWrapper<String>> handleGenericException(Exception ex) {
+    ex.printStackTrace(); // log it
+    return buildError(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+}
+
 
 
 }
