@@ -173,6 +173,8 @@ public List<UserUpcomingEventDto> getUpcomingEventsForUser(Long userId) {
             .map(eventParticipant -> new UserUpcomingEventDto(eventParticipant.getEvent()))
             .toList();
 }
+
+
    // Before updating checks if the user is actually registered:
 public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long eventId) {
     EventParticipant eventParticipant = eventParticipantRepository
@@ -180,7 +182,6 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
             .orElseThrow(() -> new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "The participant is not registered for this event"
             ));
-
     // Retrieves the "Cancelled" status from the ParticipantStatus table to make en  update.
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
@@ -188,7 +189,6 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
                     // Throws a ResponseStatusException (400) if  status is not found.
                     HttpStatus.BAD_REQUEST, "Cancelled status not found"
             ));
-
     eventParticipant.setParticipantStatus(cancelledStatus);
     // Save the updated EventParticipant entity to persist the change in database
     eventParticipantRepository.save(eventParticipant);

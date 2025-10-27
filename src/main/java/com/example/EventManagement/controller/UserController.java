@@ -81,7 +81,6 @@ public class UserController {
      *   - If the "Cancelled" status is missing, it throws a ResponseStatusException.
      * - Updates the EventParticipant entity to set the participant status to "Cancelled".
      * - Saves the updated entity in the database.
-     *
      * Result:
      * - If successful, the user’s participation in the event is marked as cancelled.
      * - If the user was not registered, the response will indicate an error.

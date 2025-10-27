@@ -1,4 +1,18 @@
 package com.example.EventManagement.payload.response;
+/**
+ * Generic wrapper class for API responses.
+ *
+ * <p>It contains:</p>
+ * <ul>
+ *   <li><b>status</b> - Shows the request was SUCCESS or ERROR.</li>
+ *   <li><b>message</b> - A  message explaining the result.</li>
+ *   <li><b>data</b> - The  payload returned by the API (can be any type M).</li>
+ * </ul>
+ *
+ * <p>This class helps standardize API responses for frontend that can always
+ * expect the same structure.</p>
+ *
+**/
 public class ApiResponseWrapper<M> {
     private String status;
     private String message;
@@ -11,7 +25,7 @@ public class ApiResponseWrapper<M> {
     }
 
     public String getStatus() {
-        return status;   // ✅ return type is String
+        return status;
     }
 
     public String getMessage() {
