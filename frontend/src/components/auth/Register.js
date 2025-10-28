@@ -70,7 +70,7 @@ const Register = () => {
         <div>
           <h2 className="auth-title">Create account</h2>
           <p className="auth-subtitle">
-            Eller{' '}
+            or{' '}
             <Link to="/login" className="auth-link">
               login here
             </Link>
@@ -132,7 +132,7 @@ const Register = () => {
               type="email"
               required
               className="form-input"
-              placeholder="your.email@exempel.com"
+              placeholder="your.email@exemple.com"
               value={formData.email}
               onChange={handleChange}
             />

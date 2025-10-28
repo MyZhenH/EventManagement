@@ -88,7 +88,7 @@ const Login = () => {
               disabled={loading}
               className="btn btn-primary btn-full"
             >
-              {loading ? 'Logging in...' : 'Log in'}
+              {loading ? 'Logging in...' : 'Login'}
             </button>
           </div>
 

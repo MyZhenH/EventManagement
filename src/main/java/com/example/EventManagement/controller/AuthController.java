@@ -49,7 +49,7 @@ public class AuthController {
             );
 
             response.put("success", true);
-            response.put("message", "Inloggning lyckades");
+            response.put("message", "login successful");
             response.put("user", userDto);
 
             return ResponseEntity.ok(response);

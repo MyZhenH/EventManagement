@@ -68,7 +68,7 @@ public class AuthService {
 
         // Find Participant-role
         Role participantRole = roleRepository.findByRoleName("Participant")
-                .orElseThrow(() -> new RuntimeException("Standardroll 'Participant' hittades inte"));
+                .orElseThrow(() -> new RuntimeException("Standardroll 'Participant' not found"));
 
         // Creates new users
         User user = new User();
@@ -100,7 +100,7 @@ public class AuthService {
         }
 
         if (request.getLastName() == null || request.getLastName().trim().isEmpty()) {
-            throw new RuntimeException("Lat name is mandatory");
+            throw new RuntimeException("Last name is mandatory");
         }
 
         if (request.getEmail() == null || request.getEmail().trim().isEmpty()) {
