@@ -14,6 +14,7 @@ import com.example.EventManagement.repository.CategoryRepository;
 import com.example.EventManagement.repository.EventRepository;
 import com.example.EventManagement.repository.EventStatusRepository;
 import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.mapper.EventMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,79 +22,41 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    
+
+
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final EventStatusRepository eventStatusRepository;
+    private final EventMapper eventMapper;
+
 
     public EventService(EventRepository eventRepository,
                         UserRepository userRepository,
                         CategoryRepository categoryRepository,
-                        EventStatusRepository eventStatusRepository) {
+                        EventStatusRepository eventStatusRepository, EventMapper eventMapper) {
 
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.eventStatusRepository = eventStatusRepository;
+        this.eventMapper = eventMapper;
+
     }
 
-    /**
-     * Retrieves a list of all events with basic information including ID, title, location,
-     * start date, and end date.
-     *
-     * <p>This method fetches all event entities from the repository and converts each to an
-     * {@link EventBasicDto} containing raw event data. If the event location is not set,
-     * it defaults to the string "Not Determined". Dates are transferred as raw
-     * {@link java.time.LocalDateTime} objects without formatting, leaving presentation
-     * concerns to higher application layers.</p>
-     *
-     * @return a list of {@link EventBasicDto} objects representing basic event data.
-     * If the repository contains no events, returns an empty list.
-     */
     public List<EventBasicDto> getAllEvents() {
-        return eventRepository.findAll()
-                .stream()
-                .map(event -> new EventBasicDto(
-                        event.getEventId(),
-                        event.getTitle(),
-                        event.getLocation() != null ? event.getLocation() : "Not Determined",
-                        event.getStartDate(),
-                        event.getEndDate()
-                ))
-                .collect(Collectors.toList());
+        List<Event> events = eventRepository.findAll();
+        return eventMapper.toBasicDtoList(events);
     }
 
-    /**
-     * Retrieves detailed information about an event based on the eventId.
-     * <p>
-     * This method looks up an event in the repository by its {@code eventId} and returns a detailed
-     * representation of the event, including its title, location, event date, description, and event status.
-     * If no event is found with the given ID, the method returns {@code null}.
-     * </p>
-     *
-     * @return An {@link EventDetailedDto} object containing detailed information about the event,
-     * or {@code null} if no event is found with the provided ID.
-     */
-    public EventDetailedDto getEventById(Long eventId) {
-        Optional<Event> event = eventRepository.findById(eventId);
 
-        if (event.isPresent()) {
-            return new EventDetailedDto(
-                    event.get().getTitle(),
-                    event.get().getLocation() != null ? event.get().getLocation() : "Not Determined",
-                    event.get().getStartDate(),
-                    event.get().getEndDate(),
-                    event.get().getDescription(),
-                    event.get().getEventStatus());
-        } else {
-            return null;
-        }
+    public EventDetailedDto getEventById(Long eventId) {
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with id " + eventId));
+        return eventMapper.toDetailedDto(event);
     }
   
     public EventResponseDto createEvent(EventCreateRequest eventCreateRequest) {

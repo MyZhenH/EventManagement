@@ -1,18 +1,8 @@
 package com.example.EventManagement.dto;
 
+
 import java.time.LocalDateTime;
 
-/**
- * Data Transfer Object (DTO) representing basic event data.
- *
- * This DTO is used to transfer essential event information between layers of the application,
- * such as event ID, title, location, and event start and end dates.
- *
- * It contains raw date/time data as {@link java.time.LocalDateTime} fields without formatting,
- * leaving presentation and formatting concerns to higher layers (e.g., UI or API).
- *
- * This separation ensures a clean architecture and allows flexible date formatting depending on context.
- */
 public class EventBasicDto {
 
     private Long eventId;
@@ -20,17 +10,20 @@ public class EventBasicDto {
     private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private String city;
 
     public EventBasicDto() {}
 
+
     public EventBasicDto(Long eventId, String title, String location,
-                         LocalDateTime startDate, LocalDateTime endDate) {
+                         LocalDateTime startDate, LocalDateTime endDate, String city) {
 
         this.eventId = eventId;
         this.title = title;
         this.location = location;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.city = city;
     }
 
     public Long getEventId() {
@@ -72,4 +65,13 @@ public class EventBasicDto {
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 }
