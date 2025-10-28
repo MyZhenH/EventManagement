@@ -18,19 +18,19 @@ const Navbar = () => {
 
           <div className="navbar-links">
             <Link to="/" className="navbar-link">
-              Alla evenemang
+              All events
             </Link>
 
             {isAuthenticated && (
               <Link to="/my-events" className="navbar-link">
-                Mina evenemang
+                My events
               </Link>
             )}
 
             {isAuthenticated ? (
               <div className="navbar-user">
                 <span>
-                  Hej, {user?.firstName}!
+                  Hi, {user?.firstName}!
                   {user?.role === 'ADMIN' && (
                     <span className="admin-badge">ADMIN</span>
                   )}
@@ -39,16 +39,16 @@ const Navbar = () => {
                   onClick={handleLogout}
                   className="btn btn-secondary"
                 >
-                  Logga ut
+                  Logout
                 </button>
               </div>
             ) : (
               <div className="navbar-user">
                 <Link to="/login" className="navbar-link">
-                  Logga in
+                  Login
                 </Link>
                 <Link to="/register" className="btn btn-secondary">
-                  Registrera
+                  Register
                 </Link>
               </div>
             )}

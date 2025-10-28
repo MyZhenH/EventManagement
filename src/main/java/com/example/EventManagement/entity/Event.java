@@ -34,6 +34,13 @@ public class Event {
     @Column(nullable = false)
     private String location;
 
+    private String address;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
+
     @NotNull
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -62,24 +69,28 @@ public class Event {
     @JoinColumn(name = "event_status_id", nullable = false)
     private EventStatus eventStatus;
 
+
     public Event() {}
 
-    public Event(String description, LocalDateTime startDate, LocalDateTime endDate,
-                 String location, LocalDateTime createdAt, LocalDateTime updatedAt,
+    public Event(String title, String description, LocalDateTime startDate,
+                 LocalDateTime endDate, String location, String address,
+                 City city, LocalDateTime createdAt, LocalDateTime updatedAt,
                  User createdBy, User updatedBy, Category category,
-                 EventStatus eventStatus, String title) {
+                 EventStatus eventStatus) {
 
+        this.title = title;
         this.description = description;
         this.startDate = startDate;
         this.endDate = endDate;
         this.location = location;
+        this.address = address;
+        this.city = city;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.createdBy = createdBy;
         this.updatedBy = updatedBy;
         this.category = category;
         this.eventStatus = eventStatus;
-        this.title = title;
     }
 
     public Long getEventId() {
@@ -128,6 +139,22 @@ public class Event {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public LocalDateTime getCreatedAt() {
