@@ -192,7 +192,7 @@ public ApiResponseWrapper<String> unregisterUserFromEvent(Long userId, Long even
     ParticipantStatus cancelledStatus = participantStatusRepository
             .findByStatusName("Cancelled")
             .orElseThrow(() -> new ResponseStatusException(
-                    // Throws a ResponseStatusException (400) if  status is not found.
+                    // Throws a ResponseStatusException(400) if  status is not found.
                     HttpStatus.BAD_REQUEST, "Cancelled status not found"
             ));
     eventParticipant.setParticipantStatus(cancelledStatus);
