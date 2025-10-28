@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Inloggning misslyckades'
+        message: error.response?.data?.message || 'login failed'
       };
     }
   };
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Registrering misslyckades'
+        message: error.response?.data?.message || 'Registration failed'
       };
     }
   };

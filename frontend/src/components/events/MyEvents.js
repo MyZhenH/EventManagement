@@ -16,7 +16,7 @@ const MyEvents = () => {
       const data = await eventService.getMyEvents();
       setEvents(data);
     } catch (err) {
-      setError('Kunde inte ladda dina evenemang');
+      setError('Could not load your events');
       console.error(err);
     } finally {
       setLoading(false);
@@ -39,7 +39,7 @@ const MyEvents = () => {
   if (loading) {
     return (
       <div className="container page-container">
-        <div className="loading">Laddar dina evenemang...</div>
+        <div className="loading">Loading your events...</div>
       </div>
     );
   }
@@ -54,13 +54,13 @@ const MyEvents = () => {
 
   return (
     <div className="container page-container">
-      <h1 className="page-title">Mina evenemang</h1>
+      <h1 className="page-title">My events</h1>
 
       {events.length === 0 ? (
         <div className="alert alert-info">
-          <p>Du har inte anmält dig till några evenemang ännu.</p>
+          <p>You have not registered for any events yet.</p>
           <Link to="/" className="auth-link mt-2">
-            Utforska tillgängliga evenemang →
+            Explore available events →
           </Link>
         </div>
       ) : (
@@ -99,7 +99,7 @@ const MyEvents = () => {
                   to={`/events/${event.eventId}`}
                   className="btn btn-primary btn-full"
                 >
-                  Visa detaljer
+                  Show details
                 </Link>
               </div>
             </div>
