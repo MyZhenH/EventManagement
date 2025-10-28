@@ -24,12 +24,22 @@ public class Event {
     private String description;
 
     @NotNull
-    @Column(name = "event_date")
-    private LocalDateTime eventDate;
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
 
     @NotBlank
     @Column(nullable = false)
     private String location;
+
+    private String address;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", nullable = false)
+    private City city;
 
     @NotNull
     @Column(name = "created_at")
@@ -59,17 +69,22 @@ public class Event {
     @JoinColumn(name = "event_status_id", nullable = false)
     private EventStatus eventStatus;
 
+
     public Event() {}
 
-    public Event(String title, String description, LocalDateTime eventDate,
-                 String location, LocalDateTime createdAt, LocalDateTime updatedAt,
+    public Event(String title, String description, LocalDateTime startDate,
+                 LocalDateTime endDate, String location, String address,
+                 City city, LocalDateTime createdAt, LocalDateTime updatedAt,
                  User createdBy, User updatedBy, Category category,
                  EventStatus eventStatus) {
 
         this.title = title;
         this.description = description;
-        this.eventDate = eventDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.location = location;
+        this.address = address;
+        this.city = city;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.createdBy = createdBy;
@@ -102,12 +117,20 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDateTime getEventDate() {
-        return eventDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setEventDate(LocalDateTime eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 
     public String getLocation() {
@@ -116,6 +139,22 @@ public class Event {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 
     public LocalDateTime getCreatedAt() {

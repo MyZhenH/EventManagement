@@ -16,7 +16,7 @@ const EventList = () => {
       const data = await eventService.getAllEvents();
       setEvents(data);
     } catch (err) {
-      setError('Kunde inte ladda evenemang');
+      setError('Could not load events');
       console.error(err);
     } finally {
       setLoading(false);
@@ -26,7 +26,7 @@ const EventList = () => {
   if (loading) {
     return (
       <div className="container page-container">
-        <div className="loading">Laddar evenemang...</div>
+        <div className="loading">Loading events...</div>
       </div>
     );
   }
@@ -42,15 +42,15 @@ const EventList = () => {
   return (
     <div className="container page-container">
       <div className="mb-6">
-        <h1 className="page-title">Alla evenemang</h1>
+        <h1 className="page-title">All events</h1>
         <p className="page-subtitle">
-          Utforska och anmäl dig till kommande evenemang
+          Explore and register for coming events
         </p>
       </div>
 
       {events.length === 0 ? (
         <div className="alert alert-info">
-          Inga evenemang tillgängliga just nu.
+          No events available right now.
         </div>
       ) : (
         <div className="grid grid-cols-3">
@@ -107,7 +107,7 @@ const EventList = () => {
                   to={`/events/${event.eventId}`}
                   className="btn btn-primary btn-full"
                 >
-                  Visa detaljer
+                  Show details
                 </Link>
               </div>
             </div>

@@ -7,7 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Kontrollera om användaren är inloggad när appen startar
+  // Control that the user is logged in when app starts
   useEffect(() => {
     checkAuth();
   }, []);
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Inloggning misslyckades'
+        message: error.response?.data?.message || 'login failed'
       };
     }
   };
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       return {
         success: false,
-        message: error.response?.data?.message || 'Registrering misslyckades'
+        message: error.response?.data?.message || 'Registration failed'
       };
     }
   };

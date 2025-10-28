@@ -1,7 +1,7 @@
 package com.example.EventManagement.controller;
 
 import com.example.EventManagement.dto.EventBasicDto;
-import com.example.EventManagement.dto.EventDetailedDTO;
+import com.example.EventManagement.dto.EventDetailedDto;
 import com.example.EventManagement.dto.EventStatusDto;
 import com.example.EventManagement.payload.request.EventCreateRequest;
 import com.example.EventManagement.payload.request.UpdateEventStatusRequest;
@@ -24,8 +24,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
- 
-    /**
+     /**
      * Retrieve a list of basic event information.
      * This method returns a list of events with basic details such as title, location, and event date.
      * If no events are found, it returns an HTTP status code 204 (No Content).
@@ -55,10 +54,10 @@ public class EventController {
      *  otherwise returns HTTP status 404 (Not Found).
      */
     @GetMapping("/{eventId}")
-    public ResponseEntity<EventDetailedDTO> getEventById(@PathVariable Long eventId){
-        EventDetailedDTO eventDTO = eventService.getEventById(eventId);
+    public ResponseEntity<EventDetailedDto> getEventById(@PathVariable Long eventId){
+        EventDetailedDto eventDTO = eventService.getEventById(eventId);
 
-        if (eventDTO != null){
+        if (eventDTO != null) {
             return ResponseEntity.ok(eventDTO);
         } else {
             return ResponseEntity.notFound().build();
@@ -83,6 +82,7 @@ public class EventController {
         eventService.deleteEvent(id);
         return ResponseEntity.noContent().build();
     }
+
     @PutMapping("/{eventId}/status")
     public ResponseEntity<EventStatusDto> updateEventStatus(
             @PathVariable Long eventId,
@@ -91,5 +91,4 @@ public class EventController {
         EventStatusDto dto = eventService.newEventStatusAndMap(eventId, request.getEventStatusId());
         return ResponseEntity.ok(dto);
     }
-
 }

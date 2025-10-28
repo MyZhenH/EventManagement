@@ -1,4 +1,3 @@
-// src/components/auth/Register.jsx
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -35,12 +34,12 @@ const Register = () => {
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Lösenorden matchar inte');
+      setError('Passwords doesnt match');
       return;
     }
 
     if (!validatePassword(formData.password)) {
-      setError('Lösenordet måste vara minst 8 tecken och innehålla både bokstäver och siffror');
+      setError('Password has to be a minimum of 8 characters and containing both letters and numbers');
       return;
     }
 
@@ -59,7 +58,7 @@ const Register = () => {
         navigate('/login');
       }, 2000);
     } else {
-      setError(result.message || 'Registrering misslyckades');
+      setError(result.message || 'Registration failed');
     }
 
     setLoading(false);
@@ -69,11 +68,11 @@ const Register = () => {
     <div className="auth-container">
       <div className="auth-box">
         <div>
-          <h2 className="auth-title">Skapa konto</h2>
+          <h2 className="auth-title">Create account</h2>
           <p className="auth-subtitle">
-            Eller{' '}
+            or{' '}
             <Link to="/login" className="auth-link">
-              logga in här
+              login here
             </Link>
           </p>
         </div>
@@ -87,14 +86,14 @@ const Register = () => {
 
           {success && (
             <div className="alert alert-success">
-              Registrering lyckades! Omdirigerar till inloggning...
+              Registration complete! Redirecting to login...
             </div>
           )}
 
           <div className="grid grid-cols-2">
             <div className="form-group">
               <label htmlFor="firstName" className="form-label">
-                Förnamn
+                First Name
               </label>
               <input
                 id="firstName"
@@ -109,7 +108,7 @@ const Register = () => {
 
             <div className="form-group">
               <label htmlFor="lastName" className="form-label">
-                Efternamn
+                Last Name
               </label>
               <input
                 id="lastName"
@@ -133,7 +132,7 @@ const Register = () => {
               type="email"
               required
               className="form-input"
-              placeholder="din.email@exempel.com"
+              placeholder="your.email@exemple.com"
               value={formData.email}
               onChange={handleChange}
             />
@@ -141,7 +140,7 @@ const Register = () => {
 
           <div className="form-group">
             <label htmlFor="password" className="form-label">
-              Lösenord
+              Password
             </label>
             <input
               id="password"
@@ -153,13 +152,13 @@ const Register = () => {
               onChange={handleChange}
             />
             <p className="form-text">
-              Minst 8 tecken, måste innehålla både bokstäver och siffror
+              Minimum 8 characters, must contain both letters and numbers
             </p>
           </div>
 
           <div className="form-group">
             <label htmlFor="confirmPassword" className="form-label">
-              Bekräfta lösenord
+              Confirm password
             </label>
             <input
               id="confirmPassword"
@@ -178,13 +177,13 @@ const Register = () => {
               disabled={loading}
               className="btn btn-primary btn-full"
             >
-              {loading ? 'Skapar konto...' : 'Skapa konto'}
+              {loading ? 'Creating account...' : 'Create account'}
             </button>
           </div>
 
           <div className="text-center">
             <Link to="/" className="auth-link">
-              ← Tillbaka till evenemang
+              ← Back to event
             </Link>
           </div>
         </form>

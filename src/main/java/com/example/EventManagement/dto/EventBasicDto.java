@@ -1,24 +1,36 @@
 package com.example.EventManagement.dto;
 
+import java.time.LocalDateTime;
+
 /**
- * Data Transfer Object (DTO) for representing an event.
- * This DTO is used for transferring basic event data such as event id, title, location and event date.
+ * Data Transfer Object (DTO) representing basic event data.
+ *
+ * This DTO is used to transfer essential event information between layers of the application,
+ * such as event ID, title, location, and event start and end dates.
+ *
+ * It contains raw date/time data as {@link java.time.LocalDateTime} fields without formatting,
+ * leaving presentation and formatting concerns to higher layers (e.g., UI or API).
+ *
+ * This separation ensures a clean architecture and allows flexible date formatting depending on context.
  */
 public class EventBasicDto {
+
     private Long eventId;
     private String title;
     private String location;
-    private String eventDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
 
     public EventBasicDto() {}
 
     public EventBasicDto(Long eventId, String title, String location,
-                         String eventDate) {
+                         LocalDateTime startDate, LocalDateTime endDate) {
 
         this.eventId = eventId;
         this.title = title;
         this.location = location;
-        this.eventDate = eventDate;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Long getEventId() {
@@ -45,11 +57,19 @@ public class EventBasicDto {
         this.location = location;
     }
 
-    public String getEventDate() {
-        return eventDate;
+    public LocalDateTime getStartDate() {
+        return startDate;
     }
 
-    public void setEventDate(String eventDate) {
-        this.eventDate = eventDate;
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
     }
 }

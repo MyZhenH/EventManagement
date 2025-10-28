@@ -1,4 +1,3 @@
-// src/components/events/EventDetails.js
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { eventService } from '../../services/eventService';
@@ -27,7 +26,7 @@ const EventDetails = () => {
       const data = await eventService.getEventById(eventId);
       setEvent(data);
     } catch (err) {
-      setError('Kunde inte ladda eventdetaljer');
+      setError('Couldnt load event details');
       console.error(err);
     } finally {
       setLoading(false);
@@ -61,14 +60,14 @@ const EventDetails = () => {
         window.alert(result.message);
       }
     } catch (err) {
-      window.alert(err.response?.data?.message || 'Något gick fel vid anmälan');
+      window.alert(err.response?.data?.message || 'Something went wrong with the registration');
     } finally {
       setActionLoading(false);
     }
   };
 
   const handleUnregister = async () => {
-    if (!window.confirm('Är du säker på att du vill avanmäla dig?')) {
+    if (!window.confirm('Are you sure you want to unregister?')) {
       return;
     }
 
@@ -82,7 +81,7 @@ const EventDetails = () => {
         window.alert(result.message);
       }
     } catch (err) {
-      window.alert(err.response?.data?.message || 'Något gick fel vid avanmälan');
+      window.alert(err.response?.data?.message || 'Something went wrong during unregistration');
     } finally {
       setActionLoading(false);
     }
@@ -90,7 +89,7 @@ const EventDetails = () => {
 
   if (loading) {
     return (
-      <div className="loading">Laddar...</div>
+      <div className="loading">Loading...</div>
     );
   }
 
@@ -105,7 +104,7 @@ const EventDetails = () => {
   if (!event) {
     return (
       <div className="container page-container">
-        <div className="text-center">Event hittades inte</div>
+        <div className="text-center">Event not found</div>
       </div>
     );
   }
@@ -140,7 +139,7 @@ const EventDetails = () => {
         </div>
 
         <div className="event-section">
-          <h2 className="section-title">Beskrivning</h2>
+          <h2 className="section-title">Description</h2>
           <p className="event-description">{event.description}</p>
         </div>
 
@@ -151,14 +150,14 @@ const EventDetails = () => {
                 <svg className="check-icon" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
-                Du är anmäld till detta event
+                You are registered to this event
               </div>
               <button
                 onClick={handleUnregister}
                 disabled={actionLoading}
                 className="btn btn-danger btn-full"
               >
-                {actionLoading ? 'Bearbetar...' : 'Avanmäl mig'}
+                {actionLoading ? 'Working...' : 'Unregister'}
               </button>
             </div>
           ) : (
@@ -167,7 +166,7 @@ const EventDetails = () => {
               disabled={actionLoading}
               className="btn btn-primary btn-full"
             >
-              {actionLoading ? 'Bearbetar...' : isAuthenticated ? 'Anmäl mig' : 'Logga in för att anmäla dig'}
+              {actionLoading ? 'Working...' : isAuthenticated ? 'Unregister' : 'Login to register'}
             </button>
           )}
         </div>
@@ -177,7 +176,7 @@ const EventDetails = () => {
             onClick={() => navigate('/')}
             className="auth-link"
           >
-            ← Tillbaka till alla evenemang
+            ← Back to events
           </button>
         </div>
       </div>
