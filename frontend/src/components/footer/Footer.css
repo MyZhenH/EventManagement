@@ -1,0 +1,95 @@
+.footer {
+  background-color: #98BAD6;
+  color: black;
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-sections {
+  display: flex;
+  gap: 3rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+}
+
+.footer-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-section h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-section a {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: black;
+  text-decoration: none;
+}
+
+.footer-section button {
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  background-color: #222;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.newsletter {
+  margin-top: 1rem;
+}
+
+.newsletter input {
+  padding: 0.4rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.newsletter button {
+  padding: 0.4rem 0.8rem;
+  background-color: #222;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.about-us button {
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 0.2rem;
+}
+
+
+
+
+
+

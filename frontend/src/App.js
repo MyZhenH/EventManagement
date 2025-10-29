@@ -6,6 +6,7 @@ import EventDetails from './components/events/EventDetails';
 import MyEvents from './components/events/MyEvents';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import Footer from "./components/footer/Footer"; //Footer Test
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
             {/* Protected routes - Required login */}
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
+
+           <Footer />
         </div>
       </AuthProvider>
     </Router>
