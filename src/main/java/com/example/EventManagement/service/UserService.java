@@ -2,156 +2,59 @@ package com.example.EventManagement.service;
 
 import com.example.EventManagement.entity.Role;
 import com.example.EventManagement.entity.User;
-import com.example.EventManagement.exception.PasswordException;
+import com.example.EventManagement.payload.request.UserRegistrationDto;
+import com.example.EventManagement.payload.response.ApiResponseWrapper;
 import com.example.EventManagement.repository.RoleRepository;
 import com.example.EventManagement.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public Map<String, String> registerUser(User user) {
-        Map<String, String> response = new HashMap<>();
+    public ApiResponseWrapper<User> registerNewUser(UserRegistrationDto dto) {
+        try {
+            if (userRepository.existsByEmail(dto.email().toLowerCase())) {
+                return new ApiResponseWrapper<>("error", "User with email already exists", null);
+            }
 
-        String firstName = user.getFirstName() != null ? user.getFirstName().trim() : null;
-        String lastName = user.getLastName() != null ? user.getLastName().trim() : null;
-        String email = user.getEmail() != null ? user.getEmail().trim().toLowerCase() : null;
-        String phone = user.getPhone() != null ? user.getPhone().trim() : null;
-        String password = user.getPassword() != null ? user.getPassword().trim() : null;
+            // Assigns the default "Participant" role to user
+            Role participantRole = roleRepository.findByRoleName("Participant")
+                    .orElseThrow(() -> new RuntimeException("Default role 'Participant' not found"));
 
-        // Check if first name is filled in
-        if (firstName == null || firstName.isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "First name is required");
-            return response;
-        }
+            User user = new User();
 
-        // Check if last name is filled in
-        if (lastName == null || lastName.isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "Last name is required");
-            return response;
-        }
+            user.setFirstName(dto.firstName().trim());
+            user.setLastName(dto.lastName().trim());
+            user.setEmail(dto.email().toLowerCase());
+            user.setPhone(dto.phone());
+            user.setPassword(passwordEncoder.encode(dto.password()));
 
-        // Check if phone number contains digits
-        if (phone != null && !phone.isEmpty() && !phone.matches("\\d+")) {
-            response.put("status", "error");
-            response.put("message", "Phone number can only contain digits");
-            return response;
-        }
+            // Output will be "YYYY-MM-DDTHH:MM:SS" instead of "YYYY-MM-DDTHH:MM:SS.sss"
+            user.setRegistrationDate(LocalDateTime.now().withNano(0));
 
-        // Check if email is filled in
-        if (email == null || email.isEmpty()){
-                response.put("status", "error");
-                response.put("message", "Email is required");
-                return response;
-        }
+            user.setRole(participantRole);
 
-        // Validate Email format
-        if (!isValidEmail(email)) {
-            response.put("status", "error");
-            response.put("message", "Invalid email format");
-            return response;
-        }
+            User savedUser = userRepository.save(user);
 
-        // Check if password is filled in
-        if (password == null || password.isEmpty()) {
-            response.put("status", "error");
-            response.put("message", "Password is required");
-            return response;
-        }
-
-        // Validation - Check if the password meet the requirements
-        passwordValidation(password);
-
-        // Validation - Check if the user already exists
-        if (userRepository.existsByEmail(email)) {
-            response.put("status", "error");
-            response.put("message", "User already exists");
-            return response;
-        }
-
-        // Assigns the default "Participant" role to user
-        Role participantRole = roleRepository.findByRoleName("Participant")
-                .orElseThrow(() -> new RuntimeException("Default role 'Participant' not found"));
-
-        user.setRole(participantRole);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setEmail(email.toLowerCase());
-        user.setPhone(phone);
-        user.setRegistrationDate(LocalDateTime.now().withNano(0));
-        user.setPassword(password);
-
-        userRepository.save(user);
-        response.put("status", "success");
-        response.put("message", "Registration successful");
-        return response;
-    }
-
-    /**
-     * Validates a password according to certain security rules.
-     *  The password must:
-     *  <ul>
-     *      <li> Be non-null and non-empty
-     *      <li> Contain at least 8 characters
-     *      <li> Contain at least one uppercase letter
-     *      <li> Contain at least one lowercase letter
-     *      <li> Contain at least one digit
-     *  </ul>
-     *
-     * @param password the password to be validated
-     * @throws PasswordException if the password is invalid based on the above rules
-     */
-    public void passwordValidation(String password) {
-        if (password == null || password.isEmpty()) {
-            throw new PasswordException("Password cannot be empty");
-        }
-        if (password.length() < 8) {
-            throw new PasswordException("Password must be at least 8 characters long");
-        }
-        if (!password.matches(".*[A-Z].*")) {
-            throw new PasswordException("Password must contain at least one uppercase letter");
-        }
-        if (!password.matches(".*[a-z].*")) {
-            throw new PasswordException("Password must contain at least one lowercase letter");
-        }
-        if (!password.matches(".*[0-9].*")) {
-            throw new PasswordException("Password must contain at least one number");
+            return new ApiResponseWrapper<>("success", "User registered successfully", savedUser);
+        } catch (RuntimeException e) {
+            return new ApiResponseWrapper<>(
+                    "error",
+                    "Registration failed: " + e.getMessage(),
+                    null);
         }
     }
-
-    /**
-     * Validates whether the given email address has a valid format.
-     * <p>
-     * This method checks if the email is not {@code null} and matches a regular expression
-     * pattern that represents a standard email format (e.g., user@example.com).
-     * </p>
-     *
-     * @param email the email address to validate
-     * @return {@code true} if the email is not null and matches the expected format,
-     *         otherwise {@code false}
-     */
-    public boolean isValidEmail(String email) {
-        if (email == null){
-            return false;
-        }
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-        return email.matches(emailRegex);
-    }
-
-
-
 }
