@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-    
+
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
@@ -81,21 +81,22 @@ public class EventService {
      * or {@code null} if no event is found with the provided ID.
      */
     public EventDetailedDto getEventById(Long eventId) {
-        Optional<Event> event = eventRepository.findById(eventId);
+        Optional<Event> eventOpt = eventRepository.findById(eventId);
 
-        if (event.isPresent()) {
+        if (eventOpt.isPresent()) {
+            Event event = eventOpt.get();
             return new EventDetailedDto(
-                    event.get().getTitle(),
-                    event.get().getLocation() != null ? event.get().getLocation() : "Not Determined",
-                    event.get().getStartDate(),
-                    event.get().getEndDate(),
-                    event.get().getDescription(),
-                    event.get().getEventStatus());
+                    event.getTitle(),
+                    event.getDescription(),
+                    event.getStartDate(),
+                    event.getEndDate(),
+                    event.getLocation() != null ? event.getLocation() : "Not Determined",
+                    event.getEventStatus());
         } else {
             return null;
         }
     }
-  
+
     public EventResponseDto createEvent(EventCreateRequest eventCreateRequest) {
         User user = userRepository.findById(1L).orElse(null);
         Event savedEvent = eventRepository.save(toEventEntity(eventCreateRequest, user));
@@ -119,7 +120,7 @@ public class EventService {
         }
 
         if (eventUpdateRequest.endDate() != null) {
-            event.setStartDate(eventUpdateRequest.endDate());
+            event.setEndDate(eventUpdateRequest.endDate());
         }
 
         if (eventUpdateRequest.location() != null) {
@@ -138,9 +139,12 @@ public class EventService {
             event.setEventStatus(eventStatus);
         }
 
+        event.setUpdatedAt(LocalDateTime.now());
+
         // 1L is a placeholder during dev
         User user = userRepository.findById(1L)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
+        event.setUpdatedBy(user);
 
         Event savedEvent = eventRepository.save(event);
         return toEventResponseDto(savedEvent);
@@ -182,6 +186,8 @@ public class EventService {
         event.setStartDate(dto.startDate());
         event.setEndDate(dto.endDate());
         event.setLocation(dto.location());
+        event.setCategory(category);
+        event.setEventStatus(status);
         event.setCreatedAt(LocalDateTime.now());
         event.setUpdatedAt(LocalDateTime.now());
 
