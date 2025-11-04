@@ -23,7 +23,7 @@ import java.io.Serializable;
  *
  * @param <T> the type of the data payload returned by this response wrapper
  */
-public class ApiResponseWrapper<T> implements Serializable {
+public class ApiResponseWrapper<T> {
     private final String status;
     private final String message;
     private final T data;
