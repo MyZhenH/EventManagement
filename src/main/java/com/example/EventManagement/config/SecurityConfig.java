@@ -38,11 +38,28 @@ public class SecurityConfig {
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/roles/**").hasRole("ADMIN") // Only admins manage roles
+                        .requestMatchers("/api/categories/**").hasRole("ADMIN") // Only admins manage categories
+                        .requestMatchers("/api/event_statuses/**").hasRole("ADMIN")
+                        .requestMatchers("/api/participant_statuses/**").hasRole("ADMIN")
+
+                        .requestMatchers("/api/users/**").hasAnyRole("ADMIN", "USER") // Users and admins can access users (e.g., for profiles)
+                        .requestMatchers(HttpMethod.GET, "/api/users/**").hasAnyRole("ADMIN", "USER") // Allow read for users
+                        .requestMatchers(HttpMethod.POST, "/api/users/").permitAll() // Allow user registration without auth
+                        .requestMatchers(HttpMethod.PUT, "/api/users/**").hasRole("ADMIN") // Update user details restricted
+
+                        .requestMatchers("/api/cities/**").hasRole("ADMIN") // Manage cities restricted to admins
+
                         .requestMatchers(HttpMethod.POST, "/api/events/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/events/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/events/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/events/**").permitAll()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers("/api/event_participants/**").authenticated() // Participants management allowed for authenticated users
+
+                        .requestMatchers("/api/reviews/**").authenticated() // Authenticated users can manage reviews
+
+                        .anyRequest().denyAll() // Deny anything else by default
                 )
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
