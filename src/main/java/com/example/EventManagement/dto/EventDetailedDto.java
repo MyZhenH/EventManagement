@@ -2,6 +2,18 @@ package com.example.EventManagement.dto;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object (DTO) representing detailed information about an event.
+ *
+ * <p>This DTO carries essential information for displaying or processing detailed event data,
+ * including the event title, description, location, start and end dates, and the current event status.</p>
+ *
+ * <p>All date and time fields are represented as raw {@link java.time.LocalDateTime} objects,
+ * without formatting, to keep this DTO focused on data transfer without presentation logic.</p>
+ *
+ * <p>The eventStatus is now a String (status name) instead of an EventStatus object to avoid
+ * serialization issues with lazy loading.</p>
+ */
 public class EventDetailedDto {
 
     private Long eventId;
@@ -12,7 +24,7 @@ public class EventDetailedDto {
     private String location;
     private String address;
     private String city;
-    private String eventStatus;
+    private String eventStatus;  // Changed from EventStatus object to String
 
     public EventDetailedDto() {}
 

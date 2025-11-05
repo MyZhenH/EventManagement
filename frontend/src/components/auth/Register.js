@@ -72,7 +72,7 @@ const Register = () => {
           <p className="auth-subtitle">
             or{' '}
             <Link to="/login" className="auth-link">
-              login here
+              Login here
             </Link>
           </p>
         </div>

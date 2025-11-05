@@ -14,12 +14,58 @@ const EventList = () => {
   const fetchEvents = async () => {
     try {
       const data = await eventService.getAllEvents();
+      console.log('Fetched events:', data); // Debug log
       setEvents(data);
     } catch (err) {
       setError('Could not load events');
-      console.error(err);
+      console.error('Error fetching events:', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const formatEventDate = (startDate, endDate) => {
+    if (!startDate) return 'Date not specified';
+
+    try {
+      const start = new Date(startDate);
+
+      const dateOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      };
+
+      const timeOptions = {
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+
+      // If there isnt an end date, show only start date
+      if (!endDate) {
+        return start.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+      }
+
+      const end = new Date(endDate);
+
+      // Check if start and end date is the same day
+      const sameDay = start.toDateString() === end.toDateString();
+
+      if (sameDay) {
+        // Formating for dates and time when an event is the same day
+        const dateStr = start.toLocaleDateString('sv-SE', dateOptions);
+        const startTime = start.toLocaleTimeString('sv-SE', timeOptions);
+        const endTime = end.toLocaleTimeString('sv-SE', timeOptions);
+        return `${dateStr}, ${startTime} - ${endTime}`;
+      } else {
+        // Different formating on dates and time when an event is more than one day
+        const startStr = start.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+        const endStr = end.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+        return `${startStr} - ${endStr}`;
+      }
+    } catch (e) {
+      console.error('Error formatting date:', e);
+      return 'Invalid date';
     }
   };
 
@@ -76,7 +122,7 @@ const EventList = () => {
                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
                       />
                     </svg>
-                    {new Date(event.eventDate).toLocaleString('sv-SE')}
+                    {formatEventDate(event.startDate, event.endDate)}
                   </div>
 
                   <div className="event-info">
@@ -99,7 +145,7 @@ const EventList = () => {
                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                       />
                     </svg>
-                    {event.location}
+                    {event.location || 'Location not specified'}
                   </div>
                 </div>
 
