@@ -10,14 +10,13 @@ public class EventBasicDto {
     private String location;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String city;
+    private CityDto city;
 
     public EventBasicDto() {}
 
 
     public EventBasicDto(Long eventId, String title, String location,
-                         LocalDateTime startDate, LocalDateTime endDate, String city) {
-
+                         LocalDateTime startDate, LocalDateTime endDate, CityDto city) {
         this.eventId = eventId;
         this.title = title;
         this.location = location;
@@ -66,12 +65,11 @@ public class EventBasicDto {
         this.endDate = endDate;
     }
 
-    public String getCity() {
+    public CityDto getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(CityDto city) {
         this.city = city;
     }
-
 }

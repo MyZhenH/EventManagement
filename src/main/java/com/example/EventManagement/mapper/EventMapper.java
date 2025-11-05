@@ -1,7 +1,9 @@
 package com.example.EventManagement.mapper;
 
+import com.example.EventManagement.dto.CityDto;
 import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDto;
+import com.example.EventManagement.dto.EventStatusInfoDto;
 import com.example.EventManagement.entity.Event;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +23,22 @@ public class EventMapper {
         dto.setLocation(event.getLocation());
         dto.setStartDate(event.getStartDate());
         dto.setEndDate(event.getEndDate());
-        dto.setCity(event.getCity() != null ? event.getCity().getCityName() : "Unknown");
+
+        // Mapper to City DTO
+        CityDto cityDto = new CityDto();
+
+        if (event.getCity() != null) {
+            cityDto.setCityId(event.getCity().getCityId());
+            cityDto.setCityName(event.getCity().getCityName() != null ? event.getCity().getCityName() : "Unknown");
+            cityDto.setState(event.getCity().getState() != null ? event.getCity().getState() : "Unknown");
+            cityDto.setCountry(event.getCity().getCountry() != null ? event.getCity().getCountry() : "Unknown");
+        } else {
+            cityDto.setCityId(null);
+            cityDto.setCityName("Unknown");
+            cityDto.setState("Unknown");
+            cityDto.setCountry("Unknown");
+        }
+        dto.setCity(cityDto);
 
         return dto;
     }
@@ -35,7 +52,7 @@ public class EventMapper {
 
 
     // Mapper to Detailed DTO
-    public EventDetailedDto toDetailedDto(Event event){
+    public EventDetailedDto toDetailedDto(Event event) {
 
         EventDetailedDto dto = new EventDetailedDto();
         dto.setEventId(event.getEventId());
@@ -45,8 +62,35 @@ public class EventMapper {
         dto.setEndDate(event.getEndDate());
         dto.setLocation(event.getLocation() != null ? event.getLocation() : "Not Determined");
         dto.setAddress(event.getAddress() != null ? event.getAddress() : "Unknown");
-        dto.setCity(event.getCity() != null ? event.getCity().getCityName() : "Unknown");
-        dto.setEventStatus(event.getEventStatus() != null ? event.getEventStatus().getStatusName(): "Unknown");
+
+        // Mapper to City DTO
+        CityDto cityDto = new CityDto();
+
+        if (event.getCity() != null) {
+            cityDto.setCityId(event.getCity().getCityId());
+            cityDto.setCityName(event.getCity().getCityName() != null ? event.getCity().getCityName() : "Unknown");
+            cityDto.setState(event.getCity().getState() != null ? event.getCity().getState() : "Unknown");
+            cityDto.setCountry(event.getCity().getCountry() != null ? event.getCity().getCountry() : "Unknown");
+        } else {
+            cityDto.setCityId(null);
+            cityDto.setCityName("Unknown");
+            cityDto.setState("Unknown");
+            cityDto.setCountry("Unknown");
+        }
+        dto.setCity(cityDto);
+
+
+        // Mapper to EventStatusInfo DTO
+        EventStatusInfoDto statusDto = new EventStatusInfoDto();
+
+        if (event.getEventStatus() != null) {
+            statusDto.setEventStatusId(event.getEventStatus().getEventStatusId());
+            statusDto.setStatusName(event.getEventStatus().getStatusName() != null ? event.getEventStatus().getStatusName() : "Unknown");
+        } else {
+            statusDto.setEventStatusId(null);
+            statusDto.setStatusName("Unknown");
+        }
+        dto.setEventStatus(statusDto);
 
         return dto;
 

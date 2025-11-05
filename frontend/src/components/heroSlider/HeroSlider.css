@@ -57,3 +57,7 @@
   text-align: left;
   color: white;
 }
+
+.btn-hero:hover {
+  background-color: #e0e0e0;
+}

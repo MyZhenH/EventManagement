@@ -23,15 +23,15 @@ public class EventDetailedDto {
     private LocalDateTime endDate;
     private String location;
     private String address;
-    private String city;
-    private String eventStatus;  // Changed from EventStatus object to String
+    private CityDto city;
+    private EventStatusInfoDto eventStatus;
+    //private String eventStatus;  // Changed from EventStatus object to String
 
     public EventDetailedDto() {}
 
-    public EventDetailedDto(Long eventId, String title, String description, LocalDateTime startDate,
-                            LocalDateTime endDate, String location, String address,
-                            String city, String eventStatus) {
-
+    public EventDetailedDto(Long eventId, String title, String description,
+                            LocalDateTime startDate, LocalDateTime endDate, String location,
+                            String address, CityDto city, EventStatusInfoDto eventStatus) {
         this.eventId = eventId;
         this.title = title;
         this.description = description;
@@ -42,6 +42,7 @@ public class EventDetailedDto {
         this.city = city;
         this.eventStatus = eventStatus;
     }
+
 
     public Long getEventId() {
         return eventId;
@@ -99,21 +100,19 @@ public class EventDetailedDto {
         this.address = address;
     }
 
-    public String getCity() {
+    public CityDto getCity() {
         return city;
     }
 
-    public void setCity(String city) {
+    public void setCity(CityDto city) {
         this.city = city;
     }
 
-    public String getEventStatus() {
+    public EventStatusInfoDto getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(String eventStatus) {
+    public void setEventStatus(EventStatusInfoDto eventStatus) {
         this.eventStatus = eventStatus;
     }
-
-
 }

@@ -37,7 +37,7 @@ const HeroSlider = () => {
       >
         <div className="hero-content">
           <h1>{currentEvent.title}</h1>
-          <button className="btn btn-primary">See More</button>
+          <button className="btn btn-hero">See More</button>
         </div>
         <button className="prev" onClick={prevSlide} aria-label="Previous Slide">
           &#10094;

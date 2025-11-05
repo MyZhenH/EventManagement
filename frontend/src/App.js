@@ -6,10 +6,10 @@ import EventDetails from './components/events/EventDetails';
 import MyEvents from './components/events/MyEvents';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import Footer from "./components/footer/Footer"; //Footer Test
-import AboutPage from "./pages/AboutPage"; //test
-import ScrollToTop from "./components/layout/ScrollToTop"; //test
-import HomePage from "./pages/HomePage"; //test
+import Footer from "./components/footer/Footer";
+import AboutPage from "./pages/AboutPage";
+import ScrollToTop from "./components/layout/ScrollToTop";
+import HomePage from "./pages/HomePage";
 
 
 
@@ -22,12 +22,12 @@ function App() {
           <Navbar />
           <Routes>
             {/* Public routes - Everyone can see */}
-            <Route path="/" element={<HomePage />} /> {/*test*/}
+            <Route path="/" element={<HomePage />} />
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
 
              {/* About page route */}
-              <Route path="/about" element={<AboutPage />} /> //test
+              <Route path="/about" element={<AboutPage />} />
 
             {/* Auth routes */}
             <Route path="/login" element={<Login />} />

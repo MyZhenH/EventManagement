@@ -3,7 +3,6 @@
   max-width: 900px;
   margin: 0 auto;
   line-height: 1.6;
-  color: #333;
 }
 
 .about-hero {
@@ -11,45 +10,17 @@
 }
 
 .about-hero h1 {
-  font-size: 2.5rem;
-  color: #222;
+  font-size: 2.3rem;
 }
 
 .about-hero p {
   font-size: 1.1rem;
-  color: #555;
 }
 
 .about-story,
-.about-mission,
-.about-team,
-.about-contact {
+.about-mission {
   margin-bottom: 3rem;
 }
 
-.about-team .team-grid {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
 
-.team-member {
-  text-align: center;
-}
 
-.team-member img {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.about-contact a {
-  color: #0077cc;
-  text-decoration: none;
-}
-
-.about-contact a:hover {
-  text-decoration: underline;
-}

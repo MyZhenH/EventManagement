@@ -5,7 +5,7 @@ import "./EventSection.css";
 const EventSection = () => {
   return (
 
-    <div className="event-section">
+    <div className="event-sections">
       <section className="upcoming-events">
         <h2>Upcoming Events</h2>
         <p>Discover what’s happening this month</p>
