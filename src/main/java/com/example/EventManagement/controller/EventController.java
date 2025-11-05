@@ -12,9 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/events")
@@ -56,31 +54,13 @@ public class EventController {
      *  otherwise returns HTTP status 404 (Not Found).
      */
     @GetMapping("/{eventId}")
-    public ResponseEntity<?> getEventById(@PathVariable Long eventId){
-        try {
-            EventDetailedDto eventDTO = eventService.getEventById(eventId);
+    public ResponseEntity<EventDetailedDto> getEventById(@PathVariable Long eventId){
+        EventDetailedDto eventDTO = eventService.getEventById(eventId);
 
-            if (eventDTO != null) {
-                // Create a response map with proper field mapping for frontend
-                Map<String, Object> response = new HashMap<>();
-                response.put("title", eventDTO.getTitle());
-                response.put("description", eventDTO.getDescription());
-                response.put("location", eventDTO.getLocation());
-                response.put("eventDate", eventDTO.getStartDate()); // Frontend expects eventDate
-                response.put("startDate", eventDTO.getStartDate());
-                response.put("endDate", eventDTO.getEndDate());
-                response.put("eventStatus", eventDTO.getEventStatus() != null ?
-                        eventDTO.getEventStatus().getStatusName() : "Unknown");
-
-                return ResponseEntity.ok(response);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Could not load event details");
-            errorResponse.put("message", e.getMessage());
-            return ResponseEntity.internalServerError().body(errorResponse);
+        if (eventDTO != null) {
+            return ResponseEntity.ok(eventDTO);
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 

@@ -17,6 +17,7 @@ import com.example.EventManagement.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -46,15 +47,6 @@ public class EventService {
     /**
      * Retrieves a list of all events with basic information including ID, title, location,
      * start date, and end date.
-     *
-     * <p>This method fetches all event entities from the repository and converts each to an
-     * {@link EventBasicDto} containing raw event data. If the event location is not set,
-     * it defaults to the string "Not Determined". Dates are transferred as raw
-     * {@link java.time.LocalDateTime} objects without formatting, leaving presentation
-     * concerns to higher application layers.</p>
-     *
-     * @return a list of {@link EventBasicDto} objects representing basic event data.
-     * If the repository contains no events, returns an empty list.
      */
     public List<EventBasicDto> getAllEvents() {
         return eventRepository.findAll()
@@ -71,27 +63,29 @@ public class EventService {
 
     /**
      * Retrieves detailed information about an event based on the eventId.
-     * <p>
-     * This method looks up an event in the repository by its {@code eventId} and returns a detailed
-     * representation of the event, including its title, location, event date, description, and event status.
-     * If no event is found with the given ID, the method returns {@code null}.
-     * </p>
-     *
-     * @return An {@link EventDetailedDto} object containing detailed information about the event,
-     * or {@code null} if no event is found with the provided ID.
+     * Returns the status as a String (status name) to avoid serialization issues.
      */
+    @Transactional(readOnly = true)
     public EventDetailedDto getEventById(Long eventId) {
         Optional<Event> eventOpt = eventRepository.findById(eventId);
 
         if (eventOpt.isPresent()) {
             Event event = eventOpt.get();
+
+            // Get status name as String to avoid lazy loading issues
+            String statusName = "Unknown";
+            if (event.getEventStatus() != null) {
+                statusName = event.getEventStatus().getStatusName();
+            }
+
             return new EventDetailedDto(
                     event.getTitle(),
                     event.getDescription(),
                     event.getStartDate(),
                     event.getEndDate(),
                     event.getLocation() != null ? event.getLocation() : "Not Determined",
-                    event.getEventStatus());
+                    statusName  // Now passing String instead of EventStatus object
+            );
         } else {
             return null;
         }
@@ -208,6 +202,7 @@ public class EventService {
                 .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
     }
 
+    @Transactional
     public EventStatusDto newEventStatusAndMap(Long eventId, Long newStatusId) {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Event not found"));

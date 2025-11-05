@@ -89,18 +89,45 @@ const EventDetails = () => {
     }
   };
 
-  const formatEventDate = (dateString) => {
-    if (!dateString) return 'Date not specified';
+  const formatEventDate = (startDate, endDate) => {
+    if (!startDate) return 'Date not specified';
 
     try {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('sv-SE', {
+      const start = new Date(startDate);
+
+      const dateOptions = {
         year: 'numeric',
         month: 'long',
-        day: 'numeric',
+        day: 'numeric'
+      };
+
+      const timeOptions = {
         hour: '2-digit',
         minute: '2-digit'
-      });
+      };
+
+      // If end date doesnt exist, only show start date
+      if (!endDate) {
+        return start.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+      }
+
+      const end = new Date(endDate);
+
+      // Check if start and end is the same day
+      const sameDay = start.toDateString() === end.toDateString();
+
+      if (sameDay) {
+        // Same day: "14 october 2025, 18:00 - 21:00"
+        const dateStr = start.toLocaleDateString('sv-SE', dateOptions);
+        const startTime = start.toLocaleTimeString('sv-SE', timeOptions);
+        const endTime = end.toLocaleTimeString('sv-SE', timeOptions);
+        return `${dateStr}, ${startTime} - ${endTime}`;
+      } else {
+        // Different days: "14 october 2025, 18:00 - 15 october 2025, 21:00"
+        const startStr = start.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+        const endStr = end.toLocaleDateString('sv-SE', { ...dateOptions, ...timeOptions });
+        return `${startStr} - ${endStr}`;
+      }
     } catch (e) {
       console.error('Error formatting date:', e);
       return 'Invalid date';
@@ -151,7 +178,7 @@ const EventDetails = () => {
             <svg className="event-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
             </svg>
-            <span>{formatEventDate(event.eventDate || event.startDate)}</span>
+            <span>{formatEventDate(event.startDate, event.endDate)}</span>
           </div>
 
           <div className="event-info">
@@ -166,7 +193,11 @@ const EventDetails = () => {
             <svg className="event-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span><strong>Status: {event.eventStatus || 'Unknown'}</strong></span>
+            <span>
+              <strong>
+                Status: {event.eventStatus?.statusName || event.eventStatus || 'Unknown'}
+              </strong>
+            </span>
           </div>
         </div>
 

@@ -34,11 +34,11 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-box">
         <div>
-          <h2 className="auth-title">Logga in</h2>
+          <h2 className="auth-title">Login</h2>
           <p className="auth-subtitle">
-            Eller{' '}
+            or {' '}
             <Link to="/register" className="auth-link">
-              create a new account
+              Create a new account
             </Link>
           </p>
         </div>
