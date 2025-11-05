@@ -1,6 +1,5 @@
 package com.example.EventManagement.dto;
 
-import com.example.EventManagement.entity.EventStatus;
 import java.time.LocalDateTime;
 
 /**
@@ -12,10 +11,8 @@ import java.time.LocalDateTime;
  * <p>All date and time fields are represented as raw {@link java.time.LocalDateTime} objects,
  * without formatting, to keep this DTO focused on data transfer without presentation logic.</p>
  *
- * <p>The {@link EventStatus} enum captures the current state or status of the event.</p>
- *
- * <p>This DTO serves as a structured contract between application layers, facilitating clear
- * and safe data exchange without embedding business logic or formatting concerns.</p>
+ * <p>The eventStatus is now a String (status name) instead of an EventStatus object to avoid
+ * serialization issues with lazy loading.</p>
  */
 public class EventDetailedDto {
     private String title;
@@ -23,12 +20,12 @@ public class EventDetailedDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String location;
-    private EventStatus eventStatus;
+    private String eventStatus;  // Changed from EventStatus object to String
 
     public EventDetailedDto() {}
 
     public EventDetailedDto(String title, String description, LocalDateTime startDate,
-                            LocalDateTime endDate, String location, EventStatus eventStatus) {
+                            LocalDateTime endDate, String location, String eventStatus) {
 
         this.title = title;
         this.description = description;
@@ -78,11 +75,11 @@ public class EventDetailedDto {
         this.location = location;
     }
 
-    public EventStatus getEventStatus() {
+    public String getEventStatus() {
         return eventStatus;
     }
 
-    public void setEventStatus(EventStatus eventStatus) {
+    public void setEventStatus(String eventStatus) {
         this.eventStatus = eventStatus;
     }
 }

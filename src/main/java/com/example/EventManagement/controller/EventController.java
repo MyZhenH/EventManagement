@@ -24,7 +24,7 @@ public class EventController {
         this.eventService = eventService;
     }
 
-     /**
+    /**
      * Retrieve a list of basic event information.
      * This method returns a list of events with basic details such as title, location, and event date.
      * If no events are found, it returns an HTTP status code 204 (No Content).
@@ -63,7 +63,7 @@ public class EventController {
             return ResponseEntity.notFound().build();
         }
     }
-  
+
     @PostMapping
     public ResponseEntity<EventResponseDto> createEvent(@Valid @RequestBody EventCreateRequest eventCreateRequest) {
         return ResponseEntity.ok(eventService.createEvent(eventCreateRequest));
