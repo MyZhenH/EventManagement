@@ -30,7 +30,7 @@ public class User {
     @Column(name = "registration_date")
     private LocalDateTime registrationDate;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
     private Role role;
 
