@@ -11,18 +11,22 @@ public class EventBasicDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private CityDto city;
+    private Long categoryId;
+    private String categoryName;
 
     public EventBasicDto() {}
 
-
     public EventBasicDto(Long eventId, String title, String location,
-                         LocalDateTime startDate, LocalDateTime endDate, CityDto city) {
+                         LocalDateTime startDate, LocalDateTime endDate, CityDto city,
+                         Long categoryId, String categoryName) {
         this.eventId = eventId;
         this.title = title;
         this.location = location;
         this.startDate = startDate;
         this.endDate = endDate;
         this.city = city;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     public Long getEventId() {
@@ -71,5 +75,21 @@ public class EventBasicDto {
 
     public void setCity(CityDto city) {
         this.city = city;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

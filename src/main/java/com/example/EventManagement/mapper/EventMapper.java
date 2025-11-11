@@ -1,9 +1,7 @@
 package com.example.EventManagement.mapper;
 
-import com.example.EventManagement.dto.CityDto;
-import com.example.EventManagement.dto.EventBasicDto;
-import com.example.EventManagement.dto.EventDetailedDto;
-import com.example.EventManagement.dto.EventStatusInfoDto;
+import com.example.EventManagement.dto.*;
+import com.example.EventManagement.entity.City;
 import com.example.EventManagement.entity.Event;
 import org.springframework.stereotype.Component;
 
@@ -14,32 +12,10 @@ import java.util.stream.Collectors;
 @Component
 public class EventMapper {
 
-    // Mapper to Basic DTO
+    // Mapper to BasicDto
     public EventBasicDto toBasicDto(Event event) {
-
         EventBasicDto dto = new EventBasicDto();
-        dto.setEventId(event.getEventId());
-        dto.setTitle(event.getTitle());
-        dto.setLocation(event.getLocation());
-        dto.setStartDate(event.getStartDate());
-        dto.setEndDate(event.getEndDate());
-
-        // Mapper to City DTO
-        CityDto cityDto = new CityDto();
-
-        if (event.getCity() != null) {
-            cityDto.setCityId(event.getCity().getCityId());
-            cityDto.setCityName(event.getCity().getCityName() != null ? event.getCity().getCityName() : "Unknown");
-            cityDto.setState(event.getCity().getState() != null ? event.getCity().getState() : "Unknown");
-            cityDto.setCountry(event.getCity().getCountry() != null ? event.getCity().getCountry() : "Unknown");
-        } else {
-            cityDto.setCityId(null);
-            cityDto.setCityName("Unknown");
-            cityDto.setState("Unknown");
-            cityDto.setCountry("Unknown");
-        }
-        dto.setCity(cityDto);
-
+        mapCommonFields(event, dto);  // Map common fields
         return dto;
     }
 
@@ -50,58 +26,51 @@ public class EventMapper {
                 .collect(Collectors.toList());
     }
 
-
-    // Mapper to Detailed DTO
+    // Mapper to DetailedDto
     public EventDetailedDto toDetailedDto(Event event) {
-
         EventDetailedDto dto = new EventDetailedDto();
-        dto.setEventId(event.getEventId());
-        dto.setTitle(event.getTitle());
+        mapCommonFields(event, dto);
         dto.setDescription(event.getDescription());
-        dto.setStartDate(event.getStartDate());
-        dto.setEndDate(event.getEndDate());
-        dto.setLocation(event.getLocation() != null ? event.getLocation() : "Not Determined");
         dto.setAddress(event.getAddress() != null ? event.getAddress() : "Unknown");
+        dto.setEventStatusId(event.getEventStatus() != null ? event.getEventStatus().getEventStatusId() : null);
+        dto.setEventStatus(event.getEventStatus() != null ? event.getEventStatus().getStatusName() : "Unknown");
+        return dto;
+    }
 
-        // Mapper to City DTO
+    public List<EventDetailedDto> toDetailedDtoList(List<Event> events) {
+        if (events == null) return Collections.emptyList();
+        return events.stream()
+                .map(this::toDetailedDto)
+                .collect(Collectors.toList());
+    }
+
+    // Mapper to CityDto
+    private CityDto mapCity(City city) {
         CityDto cityDto = new CityDto();
-
-        if (event.getCity() != null) {
-            cityDto.setCityId(event.getCity().getCityId());
-            cityDto.setCityName(event.getCity().getCityName() != null ? event.getCity().getCityName() : "Unknown");
-            cityDto.setState(event.getCity().getState() != null ? event.getCity().getState() : "Unknown");
-            cityDto.setCountry(event.getCity().getCountry() != null ? event.getCity().getCountry() : "Unknown");
+        if (city != null) {
+            cityDto.setCityId(city.getCityId());
+            cityDto.setCityName(city.getCityName() != null ? city.getCityName() : "Unknown");
+            cityDto.setState(city.getState() != null ? city.getState() : "Unknown");
+            cityDto.setCountry(city.getCountry() != null ? city.getCountry() : "Unknown");
         } else {
             cityDto.setCityId(null);
             cityDto.setCityName("Unknown");
             cityDto.setState("Unknown");
             cityDto.setCountry("Unknown");
         }
-        dto.setCity(cityDto);
-
-
-        // Mapper to EventStatusInfo DTO
-        EventStatusInfoDto statusDto = new EventStatusInfoDto();
-
-        if (event.getEventStatus() != null) {
-            statusDto.setEventStatusId(event.getEventStatus().getEventStatusId());
-            statusDto.setStatusName(event.getEventStatus().getStatusName() != null ? event.getEventStatus().getStatusName() : "Unknown");
-        } else {
-            statusDto.setEventStatusId(null);
-            statusDto.setStatusName("Unknown");
-        }
-        dto.setEventStatus(statusDto);
-
-        return dto;
-
+        return cityDto;
     }
 
-    public List<EventDetailedDto> toDetailedDtoList(List<Event> event) {
-        if (event == null) return Collections.emptyList();
-        return event.stream()
-                .map(this::toDetailedDto)
-                .collect(Collectors.toList());
-    }
 
+    private void mapCommonFields(Event event, EventBasicDto dto) {
+        dto.setEventId(event.getEventId());
+        dto.setTitle(event.getTitle());
+        dto.setLocation(event.getLocation() != null ? event.getLocation() : "Unknown");
+        dto.setStartDate(event.getStartDate());
+        dto.setEndDate(event.getEndDate());
+        dto.setCity(mapCity(event.getCity()));
+        dto.setCategoryId(event.getCategory() != null ? event.getCategory().getCategoryId() : null);
+        dto.setCategoryName(event.getCategory() != null ? event.getCategory().getCategoryName() : "Unknown");
+    }
 
 }
