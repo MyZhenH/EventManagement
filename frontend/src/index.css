@@ -25,22 +25,24 @@ body {
 
 /* === NAVBAR === */
 .navbar {
-  background-color: #2563eb;
   color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(180deg, #98bad6 30%, #7da8c2 100%);
+
 }
 
 .navbar-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  padding: 1.5rem 0;
+
 }
 
 .navbar-brand {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: bold;
-  color: white;
+  color: black;
   text-decoration: none;
 }
 
@@ -48,16 +50,18 @@ body {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+
 }
 
 .navbar-link {
-  color: white;
+  color: black;
   text-decoration: none;
   transition: color 0.2s;
+  font-size: 1.1rem; 
 }
 
 .navbar-link:hover {
-  color: #bfdbfe;
+  color: #1e3a8a;
 }
 
 .navbar-user {
@@ -97,7 +101,7 @@ body {
 }
 
 .btn-secondary {
-  background-color: #1e40af;
+  background: #1a1a1a;
   color: white;
 }
 
@@ -122,6 +126,16 @@ body {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.btn-login {
+ background-color: #f0f0f0;
+ color: black;
+}
+
+.btn-login:hover {
+  background-color: #e0e0e0;
+}
+
 
 /* === CARDS === */
 .card {

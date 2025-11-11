@@ -100,4 +100,5 @@ public class EventStatusDto {
     public void setStatusName(String statusName) {
         this.statusName = statusName;
     }
+
 }

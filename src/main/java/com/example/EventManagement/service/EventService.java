@@ -14,6 +14,7 @@ import com.example.EventManagement.repository.CategoryRepository;
 import com.example.EventManagement.repository.EventRepository;
 import com.example.EventManagement.repository.EventStatusRepository;
 import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.mapper.EventMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,21 +28,25 @@ import java.util.stream.Collectors;
 
 @Service
 public class EventService {
-
+    
     private final EventRepository eventRepository;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final EventStatusRepository eventStatusRepository;
+    private final EventMapper eventMapper;
+
 
     public EventService(EventRepository eventRepository,
                         UserRepository userRepository,
                         CategoryRepository categoryRepository,
-                        EventStatusRepository eventStatusRepository) {
+                        EventStatusRepository eventStatusRepository, EventMapper eventMapper) {
 
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.eventStatusRepository = eventStatusRepository;
+        this.eventMapper = eventMapper;
+
     }
 
     /**
@@ -49,16 +54,8 @@ public class EventService {
      * start date, and end date.
      */
     public List<EventBasicDto> getAllEvents() {
-        return eventRepository.findAll()
-                .stream()
-                .map(event -> new EventBasicDto(
-                        event.getEventId(),
-                        event.getTitle(),
-                        event.getLocation() != null ? event.getLocation() : "Not Determined",
-                        event.getStartDate(),
-                        event.getEndDate()
-                ))
-                .collect(Collectors.toList());
+        List<Event> events = eventRepository.findAll();
+        return eventMapper.toBasicDtoList(events);
     }
 
     /**
@@ -67,30 +64,11 @@ public class EventService {
      */
     @Transactional(readOnly = true)
     public EventDetailedDto getEventById(Long eventId) {
-        Optional<Event> eventOpt = eventRepository.findById(eventId);
-
-        if (eventOpt.isPresent()) {
-            Event event = eventOpt.get();
-
-            // Get status name as String to avoid lazy loading issues
-            String statusName = "Unknown";
-            if (event.getEventStatus() != null) {
-                statusName = event.getEventStatus().getStatusName();
-            }
-
-            return new EventDetailedDto(
-                    event.getTitle(),
-                    event.getDescription(),
-                    event.getStartDate(),
-                    event.getEndDate(),
-                    event.getLocation() != null ? event.getLocation() : "Not Determined",
-                    statusName  // Now passing String instead of EventStatus object
-            );
-        } else {
-            return null;
-        }
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(() -> new EntityNotFoundException("Event not found with id " + eventId));
+        return eventMapper.toDetailedDto(event);
     }
-
+  
     public EventResponseDto createEvent(EventCreateRequest eventCreateRequest) {
         User user = userRepository.findById(1L).orElse(null);
         Event savedEvent = eventRepository.save(toEventEntity(eventCreateRequest, user));

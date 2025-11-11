@@ -6,17 +6,28 @@ import EventDetails from './components/events/EventDetails';
 import MyEvents from './components/events/MyEvents';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
+import Footer from "./components/footer/Footer";
+import AboutPage from "./pages/AboutPage";
+import ScrollToTop from "./components/layout/ScrollToTop";
+import HomePage from "./pages/HomePage";
+
+
 
 function App() {
   return (
     <Router>
+    <ScrollToTop />
       <AuthProvider>
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Routes>
             {/* Public routes - Everyone can see */}
+            <Route path="/" element={<HomePage />} />
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
+
+             {/* About page route */}
+              <Route path="/about" element={<AboutPage />} />
 
             {/* Auth routes */}
             <Route path="/login" element={<Login />} />
@@ -25,6 +36,8 @@ function App() {
             {/* Protected routes - Required login */}
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
+
+           <Footer />
         </div>
       </AuthProvider>
     </Router>

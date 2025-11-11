@@ -8,20 +8,23 @@ import java.time.format.DateTimeFormatter;
 /**
  * LocalDateTime converter to SQLite DateTime
  */
-@Converter(autoApply = true)
-public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, String> {
+    @Converter(autoApply = true)
+    public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, String> {
 
-    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+        private static final DateTimeFormatter DB_FORMATTER =
+                DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    @Override
-    public String convertToDatabaseColumn(LocalDateTime attribute) {
-        return attribute != null ? attribute.format(ISO_FORMATTER) : null;
-    }
+        @Override
+        public String convertToDatabaseColumn(LocalDateTime attribute) {
+            return attribute != null ? attribute.format(DB_FORMATTER) : null;
+        }
 
-    @Override
-    public LocalDateTime convertToEntityAttribute(String dbData) {
-        return dbData != null ? LocalDateTime.parse(dbData, ISO_FORMATTER) : null;
-    }
+        @Override
+        public LocalDateTime convertToEntityAttribute(String dbData) {
+            return dbData != null ? LocalDateTime.parse(dbData, DB_FORMATTER) : null;
+        }
+
+
 
 }
 

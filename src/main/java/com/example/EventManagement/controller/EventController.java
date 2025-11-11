@@ -24,44 +24,16 @@ public class EventController {
         this.eventService = eventService;
     }
 
-    /**
-     * Retrieve a list of basic event information.
-     * This method returns a list of events with basic details such as title, location, and event date.
-     * If no events are found, it returns an HTTP status code 204 (No Content).
-     *
-     * @return a list of events containing basic event details,
-     * or HTTP status 204 (No Content) if no events are found.
-     */
     @GetMapping
     public ResponseEntity<List<EventBasicDto>> getAllEvents(){
         List<EventBasicDto> events = eventService.getAllEvents();
-
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-
         return ResponseEntity.ok(events);
     }
 
-    /**
-     * Retrieve detailed information about an event based on the eventId.
-     * This method returns detailed information about an event, including:
-     * title, location, date, description, and event status. If the event is not
-     * found, it returns an HTTP status code 404 (Not Found).
-     *
-     *  @param eventId The ID of the event to retrieve.
-     *  @return The detailed information about the event if the event exists,
-     *  otherwise returns HTTP status 404 (Not Found).
-     */
     @GetMapping("/{eventId}")
     public ResponseEntity<EventDetailedDto> getEventById(@PathVariable Long eventId){
         EventDetailedDto eventDTO = eventService.getEventById(eventId);
-
-        if (eventDTO != null) {
-            return ResponseEntity.ok(eventDTO);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+          return ResponseEntity.ok(eventDTO);
     }
 
     @PostMapping
