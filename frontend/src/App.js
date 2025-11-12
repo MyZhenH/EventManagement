@@ -5,6 +5,9 @@ import EventList from './components/events/EventList';
 import EventDetails from './components/events/EventDetails';
 import MyEvents from './components/events/MyEvents';
 import Login from './components/auth/Login';
+import AdminDashboard from './components/admin/AdminDashboard';
+
+
 
 function App() {
   return (
@@ -20,6 +23,10 @@ function App() {
 
             {/* Protected routes */}
             <Route path="/my-events" element={<MyEvents />} />
+
+  {/* Admin route */}
+  <Route path="/admin" element={<AdminDashboard />} />
+
           </Routes>
         </div>
       </AuthProvider>

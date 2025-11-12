@@ -1,0 +1,41 @@
+
+
+.admin-dashboard {
+  margin-top: 2rem;
+}
+
+.admin-event-form input,
+.admin-event-form textarea {
+  width: 100%;
+  margin: 0.25rem 0;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.admin-event-card {
+  transition: all 0.2s ease-in-out;
+}
+
+.admin-event-card:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.admin-event-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.admin-event-card p {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.admin-event-form h2 {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+
