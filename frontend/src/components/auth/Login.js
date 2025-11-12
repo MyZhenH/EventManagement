@@ -1,103 +1,64 @@
-import { useState } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || '/';
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setLoading(true);
-
-    const result = await login(email, password);
-
-    if (result.success) {
-      navigate(from, { replace: true });
-    } else {
-      setError(result.message || 'Login Failed');
-    }
-
-    setLoading(false);
+  const handleAuth0Login = () => {
+    // Redirect to Auth0 login via backend
+    window.location.href = 'http://localhost:8080/oauth2/authorization/auth0';
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('error')) {
+      alert('Login failed. Please try again.');
+    }
+  }, []);
 
   return (
     <div className="auth-container">
       <div className="auth-box">
         <div>
-          <h2 className="auth-title">Login</h2>
+          <h2 className="auth-title">Welcome to Event Management</h2>
           <p className="auth-subtitle">
-            or {' '}
-            <Link to="/register" className="auth-link">
-              Create a new account
-            </Link>
+            Sign in to register for events and manage your bookings
           </p>
         </div>
 
-        <form onSubmit={handleSubmit}>
-          {error && (
-            <div className="alert alert-error">
-              {error}
-            </div>
-          )}
+        <div className="form-group">
+          <button
+            onClick={handleAuth0Login}
+            className="btn btn-primary btn-full"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.75rem',
+              fontSize: '1.1rem',
+              padding: '1rem 1.5rem',
+              fontWeight: '600'
+            }}
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7V13C2 19.5 6 22.5 12 24C18 22.5 22 19.5 22 13V7L12 2Z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"/>
+              <path d="M9 12L11 14L15 10"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"/>
+            </svg>
+            Sign in with Auth0
+          </button>
+        </div>
 
-          <div className="form-group">
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              className="form-input"
-              placeholder="your.email@exemple.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className="form-input"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <div className="form-group">
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary btn-full"
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-          </div>
-
-          <div className="text-center">
-            <Link to="/" className="auth-link">
-              ← Back to events
-            </Link>
-          </div>
-        </form>
+        <div className="text-center" style={{ marginTop: '1.5rem' }}>
+          <Link to="/" className="auth-link">
+            ← Browse events without logging in
+          </Link>
+        </div>
       </div>
     </div>
   );

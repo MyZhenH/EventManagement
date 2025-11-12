@@ -5,7 +5,6 @@ import EventList from './components/events/EventList';
 import EventDetails from './components/events/EventDetails';
 import MyEvents from './components/events/MyEvents';
 import Login from './components/auth/Login';
-import Register from './components/auth/Register';
 
 function App() {
   return (
@@ -14,15 +13,12 @@ function App() {
         <div className="min-h-screen bg-gray-50">
           <Navbar />
           <Routes>
-            {/* Public routes - Everyone can see */}
+            {/* Public routes */}
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
-
-            {/* Auth routes */}
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
 
-            {/* Protected routes - Required login */}
+            {/* Protected routes */}
             <Route path="/my-events" element={<MyEvents />} />
           </Routes>
         </div>
