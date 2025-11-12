@@ -9,10 +9,12 @@ import com.example.EventManagement.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.server.ResponseStatusException;
+import com.example.EventManagement.repository.UserRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +24,11 @@ import java.util.stream.Collectors;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository= userRepository;
     }
 
     @PostMapping("/register")
@@ -50,6 +54,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
     }
+
     /**
      * This end point fetches the upcoming events for a given user.
      * Logic explanation:
@@ -62,10 +67,19 @@ public class UserController {
      * for events in the past date.
      */
 
+    @GetMapping("/upcoming-events")
+    public ResponseEntity<ApiResponseWrapperEvent<List<UserUpcomingEventDto>>> getUserUpcomingEvents(
+            Authentication authentication) {
 
-    @GetMapping("/{userId}/upcoming-events")
-    public ResponseEntity<ApiResponseWrapperEvent<List<UserUpcomingEventDto>>> getUserUpcomingEvents(@PathVariable Long userId) {
-        List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(userId);
+        // Get user email from Auth0 token
+        String email = authentication.getName();
+
+        // Look up the user in  local DB
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+        // Get upcoming events for this user
+        List<UserUpcomingEventDto> events = userService.getUpcomingEventsForUser(user.getUserId ());
 
         if (events.isEmpty()) {
             return ResponseEntity.ok(
@@ -76,9 +90,8 @@ public class UserController {
         return ResponseEntity.ok(
                 new ApiResponseWrapperEvent<>("success", "Upcoming events retrieved successfully.", events)
         );
+
     }
-
-
     /**
      * This endpoint unregisters a user from a specific event.
      * Logic explanation:
@@ -94,15 +107,27 @@ public class UserController {
      * - This ensures that users cannot unregister from events they are not registered for.
      */
 
-    @PostMapping("/{userId}/unregister/{eventId}")
-    public ApiResponseWrapperEvent<String> unregister(
-            @PathVariable Long userId,
-            @PathVariable Long eventId
-    ) {
-        return userService.unregisterUserFromEvent(userId, eventId);
-    }
+        @PostMapping("/unregister/{eventId}")
+        public ResponseEntity<ApiResponseWrapperEvent<String>> unregisterFromEvent (
+                @PathVariable Long eventId,
+                Authentication authentication){
 
+            // Extract email from Auth0 token
+            String email = authentication.getName();
 
+            // Look up user by email
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+
+            // Perform unregistration
+            ApiResponseWrapperEvent<String> response = userService.unregisterUserFromEvent(user.getUserId(), eventId);
+
+            return ResponseEntity.ok(response);
+        }
 }
+
+
+
+
 
 
