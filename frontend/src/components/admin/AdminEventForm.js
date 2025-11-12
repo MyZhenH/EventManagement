@@ -1,48 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { eventService } from '../../services/eventService';
 import './AdminDashboard.css';
 
-const AdminEventCard = ({ event, onUpdate, onEdit }) => {
+const AdminEventForm = ({ eventToEdit, onSave }) => {
+  const [formData, setFormData] = useState({
+    title: '',
+    description: '',
+    startDate: '',
+    endDate: '',
+    location: '',
+    categoryId: '',
+    eventStatusId: '',
+  });
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      await eventService.deleteEvent(event.eventId);
-      onUpdate();
+  const [categories, setCategories] = useState([]);
+  const [statuses, setStatuses] = useState([]);
+
+  useEffect(() => {
+    // Fetch categories and statuses from API
+    const fetchData = async () => {
+      try {
+        const categoriesData = await eventService.getAllCategories();
+        const statusesData = await eventService.getAllEventStatuses();
+        setCategories(categoriesData);
+        setStatuses(statusesData);
+      } catch (err) {
+        console.error('Failed to load categories/statuses', err);
+      }
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (eventToEdit) {
+      // Map API response to form
+      setFormData({
+        title: eventToEdit.title || '',
+        description: eventToEdit.description || '',
+        startDate: eventToEdit.startDate ? eventToEdit.startDate.slice(0,16) : '', // for datetime-local
+        endDate: eventToEdit.endDate ? eventToEdit.endDate.slice(0,16) : '',
+        location: eventToEdit.location || '',
+        categoryId: eventToEdit.categoryId || '',
+        eventStatusId: eventToEdit.eventStatusId || '',
+      });
     }
+  }, [eventToEdit]);
+
+  const handleChange = (e) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleUpdateStatus = async () => {
-    const newStatus = prompt('Enter new status (e.g., ACTIVE, CANCELLED):', event.eventStatus || '');
-    if (newStatus) {
-      await eventService.updateEventStatus(event.eventId, newStatus);
-      onUpdate();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (eventToEdit && eventToEdit.eventId) {
+        await eventService.updateEvent(eventToEdit.eventId, formData);
+      } else {
+        await eventService.createEvent(formData);
+      }
+      onSave(); // refresh dashboard
+    } catch (err) {
+      console.error('Failed to save event', err);
     }
   };
 
   return (
-    <div className="admin-event-card">
-      <h3>{event.title}</h3>
+    <form className="admin-form" onSubmit={handleSubmit}>
+      <h2>{eventToEdit ? 'Edit Event' : 'Create Event'}</h2>
 
-      <p><strong>Description:</strong> {event.description || 'N/A'}</p>
-      <p><strong>Location:</strong> {event.location}</p>
-      <p><strong>Category ID:</strong> {event.categoryId || 'N/A'}</p>
-      <p><strong>Status ID:</strong> {event.eventStatusId || 'N/A'}</p>
-      <p><strong>Start:</strong> {new Date(event.startDate).toLocaleString()}</p>
-      <p><strong>End:</strong> {new Date(event.endDate).toLocaleString()}</p>
-      <p><strong>Created At:</strong> {event.createdAt ? new Date(event.createdAt).toLocaleString() : 'N/A'}</p>
-      <p><strong>Updated At:</strong> {event.updatedAt ? new Date(event.updatedAt).toLocaleString() : 'N/A'}</p>
-      <p><strong>Created By:</strong> {event.createdBy || 'N/A'}</p>
-      <p><strong>Updated By:</strong> {event.updatedBy || 'N/A'}</p>
+      <label>Title</label>
+      <input type="text" name="title" value={formData.title} onChange={handleChange} required />
 
-      <div className="card-buttons">
-        <button className="btn btn-primary" onClick={() => onEdit(event)}>Edit</button>
-        <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
-        <button className="btn btn-secondary" onClick={handleUpdateStatus}>Update Status</button>
-      </div>
-    </div>
+      <label>Description</label>
+      <textarea name="description" value={formData.description} onChange={handleChange} />
+
+      <label>Start Date</label>
+      <input type="datetime-local" name="startDate" value={formData.startDate} onChange={handleChange} required />
+
+      <label>End Date</label>
+      <input type="datetime-local" name="endDate" value={formData.endDate} onChange={handleChange} required />
+
+      <label>Location</label>
+      <input type="text" name="location" value={formData.location} onChange={handleChange} />
+
+      <label>Category</label>
+      <select name="categoryId" value={formData.categoryId} onChange={handleChange} required>
+        <option value="">Select Category</option>
+        {categories.map(cat => (
+          <option key={cat.categoryId} value={cat.categoryId}>{cat.categoryName}</option>
+        ))}
+      </select>
+
+      <label>Status</label>
+      <select name="eventStatusId" value={formData.eventStatusId} onChange={handleChange} required>
+        <option value="">Select Status</option>
+        {statuses.map(status => (
+          <option key={status.eventStatusId} value={status.eventStatusId}>{status.statusName}</option>
+        ))}
+      </select>
+
+      <button type="submit" className="btn btn-success">{eventToEdit ? 'Update' : 'Create'}</button>
+    </form>
   );
 };
 
-export default AdminEventCard;
-
-
+export default AdminEventForm;

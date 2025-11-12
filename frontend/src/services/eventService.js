@@ -33,7 +33,7 @@ export const eventService = {
     return response.data;
   },
   // Admin
-  createEvent: async (eventData) => {
+  /*createEvent: async (eventData) => {
     const response = await api.post('/events', eventData);
     return response.data;
   },
@@ -51,7 +51,28 @@ export const eventService = {
   updateEventStatus: async (eventId, statusId) => {
     const response = await api.put(`/events/${eventId}/status`, { eventStatusId: statusId });
     return response.data;
-  }
+  }*/
+  // Admin endpoints
+    createEvent: async (eventData) => {
+      const response = await api.post('/events', eventData);
+      return response.data; // EventResponseDto
+    },
+
+    updateEvent: async (eventId, eventData) => {
+      const response = await api.patch(`/events/${eventId}`, eventData);
+      return response.data; // EventResponseDto
+    },
+
+    deleteEvent: async (eventId) => {
+      await api.delete(`/events/${eventId}`);
+    },
+
+    updateEventStatus: async (eventId, newStatusId) => {
+      const response = await api.put(`/events/${eventId}/status`, {
+        eventStatusId: newStatusId,
+      });
+      return response.data; // EventStatusDto
+    },
 
 
 

@@ -25,7 +25,8 @@ function App() {
             <Route path="/my-events" element={<MyEvents />} />
 
   {/* Admin route */}
-  <Route path="/admin" element={<AdminDashboard />} />
+  //<Route path="/admin" element={<AdminDashboard />} />
+    <Route path="/admin" element={<AdminDashboard />} />
 
           </Routes>
         </div>

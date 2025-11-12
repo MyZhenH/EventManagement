@@ -1,38 +1,42 @@
+
 import React from 'react';
 import { eventService } from '../../services/eventService';
 import './AdminDashboard.css';
 
 const AdminEventCard = ({ event, onUpdate, onEdit }) => {
+  if (!event) return null; // safety check
 
   const handleDelete = async () => {
     if (window.confirm('Are you sure you want to delete this event?')) {
-      await eventService.deleteEvent(event.eventId);
-      onUpdate();
+      try {
+        await eventService.deleteEvent(event.eventId);
+        onUpdate();
+      } catch (err) {
+        console.error('Delete failed', err);
+      }
     }
   };
 
   const handleUpdateStatus = async () => {
     const newStatus = prompt('Enter new status (e.g., ACTIVE, CANCELLED):', event.eventStatus || '');
     if (newStatus) {
-      await eventService.updateEventStatus(event.eventId, newStatus);
-      onUpdate();
+      try {
+        await eventService.updateEventStatus(event.eventId, newStatus);
+        onUpdate();
+      } catch (err) {
+        console.error('Update status failed', err);
+      }
     }
   };
 
   return (
     <div className="admin-event-card">
-      <h3>{event.title}</h3>
-
+      <h3>{event.title || 'No Title'}</h3>
       <p><strong>Description:</strong> {event.description || 'N/A'}</p>
-      <p><strong>Location:</strong> {event.location}</p>
-      <p><strong>Category ID:</strong> {event.categoryId || 'N/A'}</p>
-      <p><strong>Status ID:</strong> {event.eventStatusId || 'N/A'}</p>
-      <p><strong>Start:</strong> {new Date(event.startDate).toLocaleString()}</p>
-      <p><strong>End:</strong> {new Date(event.endDate).toLocaleString()}</p>
-      <p><strong>Created At:</strong> {event.createdAt ? new Date(event.createdAt).toLocaleString() : 'N/A'}</p>
-      <p><strong>Updated At:</strong> {event.updatedAt ? new Date(event.updatedAt).toLocaleString() : 'N/A'}</p>
-      <p><strong>Created By:</strong> {event.createdBy || 'N/A'}</p>
-      <p><strong>Updated By:</strong> {event.updatedBy || 'N/A'}</p>
+      <p><strong>Location:</strong> {event.location || 'N/A'}</p>
+      <p><strong>Status:</strong> {event.eventStatus || 'N/A'}</p>
+      <p><strong>Start:</strong> {event.startDate ? new Date(event.startDate).toLocaleString() : 'N/A'}</p>
+      <p><strong>End:</strong> {event.endDate ? new Date(event.endDate).toLocaleString() : 'N/A'}</p>
 
       <div className="card-buttons">
         <button className="btn btn-primary" onClick={() => onEdit(event)}>Edit</button>
@@ -44,5 +48,3 @@ const AdminEventCard = ({ event, onUpdate, onEdit }) => {
 };
 
 export default AdminEventCard;
-
-
