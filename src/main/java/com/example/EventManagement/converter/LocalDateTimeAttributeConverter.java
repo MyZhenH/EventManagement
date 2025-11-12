@@ -6,24 +6,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 /**
- * LocalDateTime converter to SQLite DateTime
+ * LocalDateTime converter for SQLite DateTime (format: yyyy-MM-dd HH:mm:ss)
  */
 @Converter(autoApply = true)
 public class LocalDateTimeAttributeConverter implements AttributeConverter<LocalDateTime, String> {
 
-    private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    // Match SQLite default datetime format (space between date and time)
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Override
     public String convertToDatabaseColumn(LocalDateTime attribute) {
-        return attribute != null ? attribute.format(ISO_FORMATTER) : null;
+        return attribute != null ? attribute.format(FORMATTER) : null;
     }
 
     @Override
     public LocalDateTime convertToEntityAttribute(String dbData) {
-        return dbData != null ? LocalDateTime.parse(dbData, ISO_FORMATTER) : null;
+        return dbData != null ? LocalDateTime.parse(dbData, FORMATTER) : null;
     }
-
 }
-
-
-
