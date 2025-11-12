@@ -1,17 +1,64 @@
 .event-sections{
 background: rgba(152, 186, 214, 0.3);
+padding: 2rem;
 }
 
 .event-sections h2 {
   font-size: 2.1rem;
-  margin-left: 3rem;
-  margin: 0.5rem;
+  margin-left: 6rem;
 }
 
 .event-sections p{
 font-size: 1.2rem;
-margin-left: 0.5rem;
+margin-left: 6rem;
+margin-bottom: 1rem;
+
 }
+.event-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.title{
+margin-top: 3rem;
+}
+
+.music-grid{
+
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+.music-events .event-card {
+  width: 270px;
+  height: auto;
+  padding: 8px;
+  font-size: 0.9rem;
+
+}
+
+.music-grid {
+  display: flex;
+  gap: 16px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 

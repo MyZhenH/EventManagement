@@ -1,10 +1,10 @@
 .event-filters {
 background-color: rgba(79, 108, 132, 0.31);
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  padding: 0.4rem;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+display: flex;
+justify-content: center;
+gap: 1rem;
+padding: 0.4rem;
+box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .event-filters input,
@@ -45,6 +45,7 @@ background-color: rgba(79, 108, 132, 0.31);
   color: black;
   cursor: pointer;
 }
+
 
 
 

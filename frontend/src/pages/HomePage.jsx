@@ -3,6 +3,7 @@ import EventFilters from "../components/eventFilters/EventFilters";
 import EventList from "../components/events/EventList";
 import HeroSlider from "../components/heroSlider/HeroSlider";
 import EventSection from "../components/eventSection/EventSection";
+import FilterSection from "../components/eventFilters/FilterSection";
 
 const HomePage = () => {
   const [filteredEvents, setFilteredEvents] = useState([]);
@@ -15,8 +16,13 @@ const HomePage = () => {
     <div>
       <EventFilters onFilterChange={handleFilterChange} />
       <HeroSlider />
-      <EventList events={filteredEvents} />
       <EventSection />
+      <FilterSection/>
+      <EventList events={filteredEvents} />
+
+
+
+
     </div>
   );
 };
