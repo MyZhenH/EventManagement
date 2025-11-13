@@ -67,12 +67,17 @@ export const eventService = {
       await api.delete(`/events/${eventId}`);
     },
 
-    updateEventStatus: async (eventId, newStatusId) => {
-      const response = await api.put(`/events/${eventId}/status`, {
-        eventStatusId: newStatusId,
-      });
-      return response.data; // EventStatusDto
-    },
+     updateEventStatus: async (eventId, newStatusId) => {
+        if (!eventId) throw new Error("Missing eventId for status update");
+        const response = await fetch(`/api/events/${eventId}/status`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ eventStatusId: newStatusId }),
+        });
+
+        if (!response.ok) throw new Error("Failed to update event status");
+        return response.json();
+      },
 
 
 

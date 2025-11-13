@@ -32,9 +32,9 @@ const AdminEventCard = ({ event, onUpdate, onEdit }) => {
   return (
     <div className="admin-event-card">
       <h3>{event.title || 'No Title'}</h3>
-      <p><strong>Description:</strong> {event.description || 'N/A'}</p>
+
       <p><strong>Location:</strong> {event.location || 'N/A'}</p>
-      <p><strong>Status:</strong> {event.eventStatus || 'N/A'}</p>
+
       <p><strong>Start:</strong> {event.startDate ? new Date(event.startDate).toLocaleString() : 'N/A'}</p>
       <p><strong>End:</strong> {event.endDate ? new Date(event.endDate).toLocaleString() : 'N/A'}</p>
 

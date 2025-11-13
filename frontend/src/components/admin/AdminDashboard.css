@@ -1,187 +1,125 @@
-/* AdminDashboard.css */
-
-/* =========================
-   Admin Dashboard Layout
-========================= */
-.admin-dashboard {
-  padding: 2rem;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f7fa;
-  min-height: 100vh;
-}
-
-.admin-dashboard h2 {
-  margin-bottom: 1.5rem;
-  color: #333;
-}
-
-/* =========================
-   Buttons
-========================= */
-.admin-dashboard .btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.2s ease;
-}
-
-.admin-dashboard .btn-primary {
-  background-color: #007bff;
-  color: #fff;
-}
-
-.admin-dashboard .btn-primary:hover {
-  background-color: #0069d9;
-}
-
-.admin-dashboard .btn-success {
-  background-color: #28a745;
-  color: #fff;
-}
-
-.admin-dashboard .btn-success:hover {
-  background-color: #218838;
-}
-
-.admin-dashboard .btn-danger {
-  background-color: #dc3545;
-  color: #fff;
-}
-
-.admin-dashboard .btn-danger:hover {
-  background-color: #c82333;
-}
-
-.admin-dashboard .btn-secondary {
-  background-color: #6c757d;
-  color: #fff;
-}
-
-.admin-dashboard .btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-.admin-dashboard .mb-4 {
-  margin-bottom: 1rem;
-}
-
-/* =========================
-   Events Grid
-========================= */
-.events-grid {
+/*
+   Admin Dashboard Grid
+   */
+.admin-events-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+  padding: 1rem;
 }
 
-/* =========================
-   Admin Event Card
-========================= */
 .admin-event-card {
-  background-color: #fff;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 1.25rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-.admin-event-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-}
-
-.admin-event-card h3 {
-  margin-bottom: 0.75rem;
-  color: #333;
-}
-
-.admin-event-card p {
-  margin: 0.25rem 0;
-  color: #555;
+/*
+   Admin Event Form
+    */
+.admin-event-form-container {
+  background-color: #fdfdfd;
+  padding: 1.2rem 1.5rem;
+  margin: 1rem auto;
+  border-radius: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  max-width: 500px;
   font-size: 0.95rem;
 }
 
-.card-buttons {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  flex-wrap: wrap;
-}
-
-/* =========================
-   Admin Event Form - Compact
-========================= */
-.admin-form {
-  background-color: #fff;
-  padding: 1rem 1.5rem; /* smaller padding */
-  margin-bottom: 1.5rem;
-  border-radius: 6px;
-  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.admin-form h2 {
-  margin-bottom: 0.75rem;
-  font-size: 1.25rem; /* smaller title */
+.admin-event-form-container label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
   color: #333;
 }
 
-.admin-form label {
-  display: block;
-  margin-top: 0.75rem;
-  margin-bottom: 0.25rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  color: #444;
-}
-
-.admin-form input[type="text"],
-.admin-form input[type="datetime-local"],
-.admin-form textarea,
-.admin-form select {
+.admin-event-form-container input,
+.admin-event-form-container textarea,
+.admin-event-form-container select {
   width: 100%;
-  padding: 0.4rem 0.6rem; /* smaller input */
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.8rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 0.875rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
-.admin-form input:focus,
-.admin-form textarea:focus,
-.admin-form select:focus {
-  border-color: #007bff;
-  outline: none;
-}
-
-.admin-form textarea {
+.admin-event-form-container textarea {
   resize: vertical;
-  min-height: 60px; /* smaller height */
+  min-height: 60px;
 }
 
-.admin-form button {
-  margin-top: 1rem;
-  padding: 0.45rem 0.85rem;
-  font-size: 0.9rem;
+/*
+   Event Form Buttons
+    */
+.admin-event-form-buttons {
+  display: flex;
+  gap: 0.5rem; /* space between buttons */
+  margin-top: 0.5rem;
 }
 
-/* =========================
+.admin-event-form-submit {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #28a745;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-event-form-submit:hover {
+  background-color: #218838;
+}
+
+.admin-event-form-cancel {
+  display: inline-block;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-event-form-cancel:hover {
+  background-color: #c82333;
+}
+
+/*
    Responsive Adjustments
-========================= */
-@media (max-width: 768px) {
-  .events-grid {
+   */
+@media (max-width: 576px) {
+  .admin-events-grid {
     grid-template-columns: 1fr;
   }
 
-  .card-buttons {
-    flex-direction: column;
-  }
-
-  .admin-form {
+  .admin-event-form-container {
+    margin: 1rem;
     padding: 1rem;
   }
+  .admin-event-card-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .admin-status-dropdown {
+    padding: 0.3rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+
 }
