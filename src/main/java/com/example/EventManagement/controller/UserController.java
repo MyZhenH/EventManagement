@@ -112,7 +112,7 @@ public class UserController {
                 @PathVariable Long eventId,
                 Authentication authentication){
 
-            // Extract email from Auth0 token
+            // take email from Auth0 token
             String email = authentication.getName();
 
             // Look up user by email
