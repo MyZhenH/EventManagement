@@ -13,7 +13,7 @@ const AdminEventForm = ({ eventToEdit, onSave, onCancel }) => {
     eventStatusId: "",
   });
 
-  // Pre-fill form when editing
+  // Pre fill form when editing
   useEffect(() => {
     if (eventToEdit) {
       setFormData({
