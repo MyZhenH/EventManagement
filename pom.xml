@@ -30,7 +30,7 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
-        <!-- OAuth2 Client för Auth0 -->
+        <!-- OAuth2 Client for Auth0 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-oauth2-client</artifactId>
