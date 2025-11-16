@@ -55,8 +55,12 @@ public class EventMapper {
                 .collect(Collectors.toList());
     }
 
-    // Mapper to CityDto
     private CityDto mapCity(City city) {
+        // ADD THIS NULL CHECK
+        if (city == null) {
+            return new CityDto(null, "Unknown", "Unknown", "Unknown");
+        }
+
         CityDto cityDto = new CityDto();
 
         Long cityId = city.getCityId();
@@ -70,7 +74,6 @@ public class EventMapper {
         cityDto.setCountry(country != null ? country : "Unknown");
 
         return cityDto;
-
     }
 
 
