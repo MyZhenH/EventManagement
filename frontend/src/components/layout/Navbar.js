@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-
 import { FiUser } from 'react-icons/fi';
 
 
@@ -58,11 +57,7 @@ const Navbar = () => {
             ) : (
               <div className="navbar-user">
                 <Link to="/login" className="btn btn-login">
-                  <FiUser /> Login
-                </Link>
-
-                <Link to="/register" className="btn btn-secondary">
-                  Register
+                  <FiUser /> Sign In
                 </Link>
               </div>
             )}
