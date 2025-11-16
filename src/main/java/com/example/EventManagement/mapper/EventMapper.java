@@ -1,12 +1,15 @@
 package com.example.EventManagement.mapper;
 
 import com.example.EventManagement.dto.*;
+import com.example.EventManagement.entity.Category;
 import com.example.EventManagement.entity.City;
 import com.example.EventManagement.entity.Event;
+import com.example.EventManagement.entity.EventStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -32,8 +35,16 @@ public class EventMapper {
         mapCommonFields(event, dto);
         dto.setDescription(event.getDescription());
         dto.setAddress(event.getAddress() != null ? event.getAddress() : "Unknown");
-        dto.setEventStatusId(event.getEventStatus() != null ? event.getEventStatus().getEventStatusId() : null);
-        dto.setEventStatus(event.getEventStatus() != null ? event.getEventStatus().getStatusName() : "Unknown");
+
+        EventStatus status = event.getEventStatus();
+        if (status != null) {
+            dto.setEventStatusId(status.getEventStatusId());
+            dto.setEventStatus(Optional.ofNullable(status.getStatusName()).orElse("Unknown"));
+        } else {
+            dto.setEventStatusId(null);
+            dto.setEventStatus("Unknown");
+        }
+
         return dto;
     }
 
@@ -47,18 +58,19 @@ public class EventMapper {
     // Mapper to CityDto
     private CityDto mapCity(City city) {
         CityDto cityDto = new CityDto();
-        if (city != null) {
-            cityDto.setCityId(city.getCityId());
-            cityDto.setCityName(city.getCityName() != null ? city.getCityName() : "Unknown");
-            cityDto.setState(city.getState() != null ? city.getState() : "Unknown");
-            cityDto.setCountry(city.getCountry() != null ? city.getCountry() : "Unknown");
-        } else {
-            cityDto.setCityId(null);
-            cityDto.setCityName("Unknown");
-            cityDto.setState("Unknown");
-            cityDto.setCountry("Unknown");
-        }
+
+        Long cityId = city.getCityId();
+        String cityName = city.getCityName();
+        String state = city.getState();
+        String country = city.getCountry();
+
+        cityDto.setCityId(cityId);
+        cityDto.setCityName(cityName != null ? cityName : "Unknown");
+        cityDto.setState(state != null ? state : "Unknown");
+        cityDto.setCountry(country != null ? country : "Unknown");
+
         return cityDto;
+
     }
 
 
@@ -69,8 +81,15 @@ public class EventMapper {
         dto.setStartDate(event.getStartDate());
         dto.setEndDate(event.getEndDate());
         dto.setCity(mapCity(event.getCity()));
-        dto.setCategoryId(event.getCategory() != null ? event.getCategory().getCategoryId() : null);
-        dto.setCategoryName(event.getCategory() != null ? event.getCategory().getCategoryName() : "Unknown");
+
+        Category category = event.getCategory();
+        if (category != null) {
+            dto.setCategoryId(category.getCategoryId());
+            dto.setCategoryName(category.getCategoryName());
+        } else {
+            dto.setCategoryId(null);
+            dto.setCategoryName("Unknown");
+        }
     }
 
 }
