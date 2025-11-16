@@ -56,7 +56,6 @@ public class EventMapper {
     }
 
     private CityDto mapCity(City city) {
-        // ADD THIS NULL CHECK
         if (city == null) {
             return new CityDto(null, "Unknown", "Unknown", "Unknown");
         }
