@@ -15,17 +15,23 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Tillåt requests från din frontend
+        // Allow requests from frontend
         config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 
-        // Tillåt alla HTTP-metoder
+        // Allow all HTTP methods (including OPTIONS for preflight)
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
-        // Tillåt alla headers
+        // Allow all headers
         config.setAllowedHeaders(Arrays.asList("*"));
 
-        // Tillåt credentials
+        // Allow credentials (important for session-based auth)
         config.setAllowCredentials(true);
+
+        // Expose headers that frontend needs to read
+        config.setExposedHeaders(Arrays.asList("*"));
+
+        // Cache preflight requests for 1 hour (reduces number of OPTIONS requests)
+        config.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);

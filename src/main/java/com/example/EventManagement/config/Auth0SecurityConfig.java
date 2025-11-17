@@ -5,6 +5,7 @@ import com.example.EventManagement.security.Auth0OidcUserService;
 import com.example.EventManagement.security.Auth0LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,6 +31,8 @@ public class Auth0SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
                         // Public endpoints
                         .requestMatchers("/", "/api/events/**", "/api/auth/check", "/error").permitAll()
 
@@ -51,7 +54,7 @@ public class Auth0SecurityConfig {
                 .oauth2Login(oauth2 -> oauth2
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(auth0OAuth2UserService)
-                                .oidcUserService(auth0OidcUserService)  // VIKTIGT! OIDC user service
+                                .oidcUserService(auth0OidcUserService)
                         )
                         .successHandler(auth0LoginSuccessHandler)
                         .failureUrl("http://localhost:3000/login?error=true")
