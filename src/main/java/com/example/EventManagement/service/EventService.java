@@ -209,7 +209,7 @@ public class EventService {
         event.setEventStatus(newStatus);
         Event updated = eventRepository.save(event);
 
-        // To resolve problem with load lazy fields
+        // To resolve problem with load lazy fields here
         updated.getCreatedBy().getFirstName();
         updated.getCategory().getCategoryName();
         updated.getEventStatus().getStatusName();
