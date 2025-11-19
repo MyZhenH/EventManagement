@@ -11,6 +11,10 @@ public record EventCreateRequest(
         @NotNull LocalDateTime startDate,
         @NotNull LocalDateTime endDate,
         @NotBlank String location,
+        // added new field address
+        String address,
+        // added new field city
+        @NotNull Long cityId,
         @NotNull Long categoryId,
         @NotNull Long eventStatusId
 ) {}

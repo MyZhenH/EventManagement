@@ -9,6 +9,7 @@ import Footer from "./components/footer/Footer";
 import AboutPage from "./pages/AboutPage";
 import ScrollToTop from "./components/layout/ScrollToTop";
 import HomePage from "./pages/HomePage";
+import AdminDashboard from "./components/admin/AdminDashboard";
 
 
 
@@ -31,6 +32,8 @@ function App() {
 
             {/* Protected routes */}
             <Route path="/my-events" element={<MyEvents />} />
+            {/* Admin routes */}
+                        <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
 
            <Footer />

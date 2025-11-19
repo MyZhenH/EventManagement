@@ -31,5 +31,40 @@ export const eventService = {
   getMyEvents: async () => {
     const response = await api.get('/participants/my-events');
     return response.data;
-  }
+  },
+   // Admin endpoints
+     createEvent: async (eventData) => {
+       const response = await api.post('/events', eventData);
+       return response.data; // EventResponseDto
+     },
+
+       deleteEvent: async (eventId) => {
+       await api.delete(`/events/${eventId}`);
+     },
+
+
+    createEvent: async (eventData) => {
+      const response = await api.post('/events', eventData);
+      return response.data;
+    },
+
+
+   updateEventStatus: async (eventId, newStatusId) => {
+       const response = await api.put(`/events/${eventId}/status`, {
+         eventStatusId: newStatusId,
+       });
+       return response.data;
+     },
+
+
+    updateEvent: async (eventId, eventData) => {
+      const response = await api.patch(`/events/${eventId}`, eventData);
+      return response.data;
+    }
+
+
+
+
+
+
 };
