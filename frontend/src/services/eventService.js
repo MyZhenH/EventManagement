@@ -48,6 +48,15 @@ export const eventService = {
       return response.data;
     },
 
+
+   updateEventStatus: async (eventId, newStatusId) => {
+       const response = await api.put(`/events/${eventId}/status`, {
+         eventStatusId: newStatusId,
+       });
+       return response.data;
+     },
+
+
     updateEvent: async (eventId, eventData) => {
       const response = await api.patch(`/events/${eventId}`, eventData);
       return response.data;
