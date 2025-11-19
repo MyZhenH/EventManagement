@@ -58,3 +58,13 @@ mvnw.cmd
 *.zip
 *.tar.gz
 *.rar
+
+# --------------------
+# Local SQLite database (never commit real data)
+#
+# Developers: the initial DB is committed for convenience.
+# Local changes are ignored. Do not commit local DB changes.
+# --------------------
+*.db
+*.db-shm
+*.db-wal
