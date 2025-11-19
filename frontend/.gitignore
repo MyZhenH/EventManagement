@@ -7,7 +7,7 @@
 # --------------------
 # Frontend coverage / test output
 # --------------------
-/coverage
+coverage/
 
 # --------------------
 # Frontend environment files

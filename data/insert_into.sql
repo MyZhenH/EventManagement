@@ -6,6 +6,9 @@ INSERT INTO categories (category_name) VALUES ('Conference');
 INSERT INTO categories (category_name) VALUES ('Workshop');
 INSERT INTO categories (category_name) VALUES ('Meetup');
 INSERT INTO categories (category_name) VALUES ('Webinar');
+INSERT INTO categories (category_name) VALUES ('Music');
+INSERT INTO categories (category_name) VALUES ('Health & Wellness');
+INSERT INTO categories (category_name) VALUES ('Food & Drink');
 
 INSERT INTO event_statuses (status_name) VALUES ('Scheduled');
 INSERT INTO event_statuses (status_name) VALUES ('Cancelled');
