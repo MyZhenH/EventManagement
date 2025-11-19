@@ -13,6 +13,10 @@ public record EventResponseDto(
         LocalDateTime updatedAt,
         Long createdByUserId,
         Long updatedByUserId,
+        // new field address
+        String address,
+        // new field city
+        Long cityId,
         Long categoryId,
         Long eventStatusId
 ) {}

@@ -3,17 +3,11 @@ package com.example.EventManagement.service;
 import com.example.EventManagement.dto.EventBasicDto;
 import com.example.EventManagement.dto.EventDetailedDto;
 import com.example.EventManagement.dto.EventStatusDto;
-import com.example.EventManagement.entity.Category;
-import com.example.EventManagement.entity.Event;
-import com.example.EventManagement.entity.EventStatus;
-import com.example.EventManagement.entity.User;
+import com.example.EventManagement.entity.*;
 import com.example.EventManagement.payload.request.EventCreateRequest;
 import com.example.EventManagement.payload.request.EventUpdateRequest;
 import com.example.EventManagement.payload.response.EventResponseDto;
-import com.example.EventManagement.repository.CategoryRepository;
-import com.example.EventManagement.repository.EventRepository;
-import com.example.EventManagement.repository.EventStatusRepository;
-import com.example.EventManagement.repository.UserRepository;
+import com.example.EventManagement.repository.*;
 import com.example.EventManagement.mapper.EventMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -34,17 +28,20 @@ public class EventService {
     private final CategoryRepository categoryRepository;
     private final EventStatusRepository eventStatusRepository;
     private final EventMapper eventMapper;
+    private final CityRepository cityRepository;
+
 
 
     public EventService(EventRepository eventRepository,
                         UserRepository userRepository,
                         CategoryRepository categoryRepository,
-                        EventStatusRepository eventStatusRepository, EventMapper eventMapper) {
+                        EventStatusRepository eventStatusRepository, CityRepository cityRepository, EventMapper eventMapper) {
 
         this.eventRepository = eventRepository;
         this.userRepository = userRepository;
         this.categoryRepository = categoryRepository;
         this.eventStatusRepository = eventStatusRepository;
+        this.cityRepository = cityRepository;
         this.eventMapper = eventMapper;
 
     }
@@ -98,6 +95,17 @@ public class EventService {
         if (eventUpdateRequest.location() != null) {
             event.setLocation(eventUpdateRequest.location());
         }
+        //
+        if (eventUpdateRequest.address() != null) {
+            event.setAddress(eventUpdateRequest.address());
+        }
+
+        //
+        if (eventUpdateRequest.cityId() != null) {
+            City city = cityRepository.findById(eventUpdateRequest.cityId())
+                    .orElseThrow(() -> new EntityNotFoundException("City not found"));
+            event.setCity(city);
+        }
 
         if (eventUpdateRequest.categoryId() != null) {
             Category category = categoryRepository.findById(eventUpdateRequest.categoryId())
@@ -142,6 +150,8 @@ public class EventService {
                 event.getUpdatedAt(),
                 event.getCreatedBy().getUserId(),
                 event.getUpdatedBy().getUserId(),
+                event.getAddress(),
+                event.getCity().getCityId(),
                 event.getCategory().getCategoryId(),
                 event.getEventStatus().getEventStatusId()
         );
@@ -150,6 +160,7 @@ public class EventService {
     private Event toEventEntity(EventCreateRequest dto, User user) {
         Category category = getCategory(dto.categoryId());
         EventStatus status = getEventStatus(dto.eventStatusId());
+        City city = getCity(dto.cityId());
 
         Event event = new Event();
 
@@ -158,6 +169,8 @@ public class EventService {
         event.setStartDate(dto.startDate());
         event.setEndDate(dto.endDate());
         event.setLocation(dto.location());
+        event.setAddress(dto.address());
+        event.setCity(city);
         event.setCategory(category);
         event.setEventStatus(status);
         event.setCreatedAt(LocalDateTime.now());
@@ -178,6 +191,11 @@ public class EventService {
     private EventStatus getEventStatus(Long id) {
         return eventStatusRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event status not found"));
+
+    }
+    private City getCity(Long id) {
+        return cityRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("City not found"));
     }
 
     @Transactional

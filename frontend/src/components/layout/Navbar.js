@@ -61,6 +61,10 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+              {/* Admin Dashboard link  */}
+                        <Link to="/admin" className="navbar-link ml-4">
+                          Admin Dashboard
+                        </Link>
           </div>
         </div>
       </div>

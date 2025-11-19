@@ -8,6 +8,10 @@ public record EventUpdateRequest(
     LocalDateTime startDate,
     LocalDateTime endDate,
     String location,
+    // new field added
+    String address,
+    // new field added
+    Long cityId,
     Long categoryId,
     Long eventStatusId
 ) {}
