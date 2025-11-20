@@ -10,8 +10,8 @@
   flex-direction: column;
   justify-content: space-between;
   cursor: pointer;
-
 }
+
 .event-card-button{
 background: #333333;
 color: white;
