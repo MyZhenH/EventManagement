@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './EventCard.css';
-//import { formatEventDate } from "../../utils/dateUtils";
+import { formatEventDate } from "../../utils/dateUtils";
 
 function EventCard({ event }) {
   const navigate = useNavigate();
@@ -27,17 +27,22 @@ function EventCard({ event }) {
        />
 
       <div className="event-card-body">
-        <div className="event-info">
+        <div className="ec-event-info">
           <div className="event-info-item">
             <span className="info-icon">📅</span>
-
+              <span>{formatEventDate(event.startDate, event.endDate)}</span>
           </div>
 
           <div className="event-info-item">
             <span className="info-icon">📍</span>
             <span>{event.location}</span>
           </div>
+
         </div>
+        <button className="btn event-card-button" onClick={handleClick}>
+        Show details
+        </button>
+
       </div>
     </div>
   );
