@@ -5,6 +5,12 @@ background-color: rgba(79, 108, 132, 0.31);
   gap: 1rem;
   padding: 0.4rem;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #a6bac4;
+
 }
 
 .event-filters input,

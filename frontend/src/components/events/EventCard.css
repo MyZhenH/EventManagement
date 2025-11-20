@@ -1,0 +1,35 @@
+.event-card {
+  width: 60vh;
+  height: 100%;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+
+}
+.event-card-button{
+background: #333333;
+color: white;
+cursor: pointer;
+
+}
+
+.event-card-button:hover{
+background-color: #1e3a8a;
+}
+
+.ec-event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.event-card-image{
+margin-bottom: 2rem;
+}

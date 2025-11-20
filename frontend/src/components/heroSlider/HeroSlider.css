@@ -5,16 +5,13 @@
 }
 
 .hero-slide {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  min-width: 100%;
   height: 100%;
   background-size: cover;
   background-position: center;
-  color: white;
   position: relative;
 }
+
 
 .hero-content h1 {
   font-size: 2rem;
@@ -60,4 +57,11 @@
 
 .btn-hero:hover {
   background-color: #e0e0e0;
+}
+
+.slide-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.8s ease-in-out;
+
 }
