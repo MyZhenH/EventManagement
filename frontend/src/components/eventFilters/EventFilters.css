@@ -9,7 +9,7 @@ background-color: rgba(79, 108, 132, 0.31);
   position: sticky;
   top: 0;
   z-index: 999;
-  background: #a6bac4;
+  background: #C5D9E8;
 
 }
 
@@ -47,8 +47,8 @@ background-color: rgba(79, 108, 132, 0.31);
   border: 1px solid #ccc;
   border-left: none;
   border-radius: 0 4px 4px 0;
-  background-color: #98BAD6;
-  color: black;
+  background-color: #333;
+  color: white;
   cursor: pointer;
 }
 
