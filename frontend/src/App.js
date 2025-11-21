@@ -10,7 +10,7 @@ import AboutPage from "./pages/AboutPage";
 import ScrollToTop from "./components/layout/ScrollToTop";
 import HomePage from "./pages/HomePage";
 import AdminDashboard from "./components/admin/AdminDashboard";
-
+import EventsPage from "./pages/EventsPage";
 
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
             <Route path="/" element={<EventList />} />
             <Route path="/events/:eventId" element={<EventDetails />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/events" element={<EventsPage />} />
 
             {/* About page route */}
               <Route path="/about" element={<AboutPage />} />

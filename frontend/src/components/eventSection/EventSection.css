@@ -1,17 +1,22 @@
 .event-sections{
 background: rgba(152, 186, 214, 0.3);
+padding: 2rem;
 }
 
 .event-sections h2 {
   font-size: 2.1rem;
-  margin-left: 3rem;
-  margin: 0.5rem;
+  margin-left: 4.5rem;
 }
 
 .event-sections p{
 font-size: 1.2rem;
-margin-left: 0.5rem;
+margin-left: 4.5rem;
 }
+
+.title{
+margin-top: 3rem;
+}
+
 
 
 
