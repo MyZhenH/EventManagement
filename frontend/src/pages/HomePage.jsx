@@ -15,6 +15,7 @@ const HomePage = () => {
     <div>
       <EventFilters onFilterChange={handleFilterChange} />
       <HeroSlider />
+      <EventList events={filteredEvents} />
       <EventSection />
     </div>
   );

@@ -27,34 +27,25 @@ const HeroSlider = () => {
       return () => clearInterval(interval);
     }, []);
 
-
+  const currentEvent = events[currentIndex];
 
   return (
     <section className="hero-slider">
-      <div className="slide-track"
-       style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-        >
-       {events.map((event) => (
-           <div
-           key={event.id}
-           className="hero-slide"
-           style={{ backgroundImage: `url(${event.image})` }}
-           >
-
+      <div
+        className="hero-slide"
+        style={{ backgroundImage: `url(${currentEvent.image})` }}
+      >
         <div className="hero-content">
-          <h1>{event.title}</h1>
+          <h1>{currentEvent.title}</h1>
           <button className="btn btn-hero">See More</button>
-         </div>
         </div>
-       ))}
-   </div>
-
         <button className="prev" onClick={prevSlide} aria-label="Previous Slide">
           &#10094;
         </button>
         <button className="next" onClick={nextSlide} aria-label="Next Slide">
           &#10095;
         </button>
+      </div>
     </section>
   );
 };
