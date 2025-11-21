@@ -5,6 +5,12 @@ background-color: rgba(79, 108, 132, 0.31);
   gap: 1rem;
   padding: 0.4rem;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: #C5D9E8;
+
 }
 
 .event-filters input,
@@ -41,9 +47,13 @@ background-color: rgba(79, 108, 132, 0.31);
   border: 1px solid #ccc;
   border-left: none;
   border-radius: 0 4px 4px 0;
-  background-color: #98BAD6;
-  color: black;
+  background-color: #333;
+  color: white;
   cursor: pointer;
+}
+
+.search-wrapper button:hover{
+background-color: #1e3a8a;
 }
 
 

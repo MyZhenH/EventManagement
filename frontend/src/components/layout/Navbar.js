@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   const publicLinks = [
-      { name: "All events", path: "/" },
+      { name: "All events", path: "/events" },
       { name: "About", path: "/about" },
       { name: "Contact", path: "/contact" },
       { name: "Help", path: "/help" },
